@@ -81,43 +81,64 @@ def isoToDatetime(isoTimeStr):
     # We need to trim off the milliseconds, as there's no way to interpret it with strptime.
     return datetime.datetime.strptime(isoTimeStr[0:19], format)
 
-# TODO: Score according to which result is the most complete (i.e. has more keywords or unique keywords)
 def score(item, tokens):
     """Returns an overall relevance score for the item, based on the tokens and other factors.
     Note that these are currently a bunch of hand-tuned heuristics. It can get much smarter if
     needed."""
-    # TODO: Make score on interval of 0.0 to 1.0
-    score = 0
 
-    # For each token, add points
+    # Subscore for token points
+    tokenScore = 0.0
+
+    # Weights for different types of hits
+    weightNameHit = 5.0
+    weightSharingUserHit = 3.0
+    weightOwnerHit = 1.0
+    totalTokenWeight = sum([weightNameHit, weightSharingUserHit, weightOwnerHit])
+    numTokens = len(tokens)
+
     for token in tokens:
         if token.lower() in item["name"].lower():
-            score += 5
+            tokenScore += weightNameHit / totalTokenWeight / numTokens
         if "sharingUser" in item and token.lower() in item["sharingUser"].__str__().lower():
-            score += 3
+            tokenScore += weightSharingUserHit / totalTokenWeight / numTokens
         # consider weighing by how many owners they are - more relevant if it's the only owner
         if token.lower() in item["owners"].__str__().lower():
-            score += 1
+            tokenScore += weightOwnerHit / totalTokenWeight / numTokens
 
-    # Add more points for being modified by me, being more recent, etc.
-    # TODO: Weight this and token based points so it doesn't become irrelevant with high number of tokens
-    
+    # Subscore for recency
+    recencyScore = 0.0
+
+    # Weights for different types of hits
+    weightCreatedTimeHit = 2.0
+    weightModifiedByMeTimeHit = 10.0
+    weightViewedByMeTimeHit = 7.0
+    weightModifiedTimeHit = 3.0
+    totalRecencyWeight = sum([weightCreatedTimeHit, weightModifiedByMeTimeHit, weightViewedByMeTimeHit, weightModifiedTimeHit])
+
     # Boost scores for past 7 days of activity
     if datetime.datetime.now() - isoToDatetime(item["createdTime"]) <= datetime.timedelta(days = 7):
-        score += 2
+        recencyScore += weightCreatedTimeHit / totalRecencyWeight
 
     if "modifiedByMeTime" in item:
         if datetime.datetime.now() - isoToDatetime(item["modifiedByMeTime"]) <= datetime.timedelta(days = 7):
-            score += 10
+            recencyScore += weightModifiedByMeTimeHit / totalRecencyWeight
 
     if "viewedByMeTime" in item:
         if datetime.datetime.now() - isoToDatetime(item["viewedByMeTime"]) <= datetime.timedelta(days = 7):
-            score += 7
+            recencyScore += weightViewedByMeTimeHit / totalRecencyWeight
 
     if "modifiedTime" in item:
         if datetime.datetime.now() - isoToDatetime(item["modifiedTime"]) <= datetime.timedelta(days = 7):
-            score += 3
+            recencyScore += weightModifiedTimeHit / totalRecencyWeight
 
+    # Compute final score.
+    # Hand-tuned stuff here: Up to a certain number of tokens, we do weight the token score more heavily. However if there are many tokens,
+    # we don't want the token score to totally dominate over the recency score.
+    tokenScoreWeight = float(min(numTokens, 3))
+    recencyScoreWeight = 0.5
+    totalScoreWeight = sum([tokenScoreWeight, recencyScoreWeight])
+
+    score = (tokenScoreWeight / totalScoreWeight * tokenScore) + (recencyScoreWeight / totalScoreWeight * recencyScore)
     return score
 
 def main():
