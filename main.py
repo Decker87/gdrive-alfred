@@ -66,12 +66,17 @@ def searchWithTokens(service, tokens):
     if not items:
         print('No files found.')
     else:
-        print('Files:')
-        pretty = json.dumps(items, indent=4, sort_keys=True)
-        print(pretty)
-        open("example_items.json", "w").write(pretty)
+        # Attach scores directly to the items; this is just easier
         for item in items:
-            print("score: %i" % (score(item, tokens)))
+            item["score"] = score(item, tokens)
+
+        # Sort by scores
+        sortedItems = sorted(items, key = lambda x: x["score"], reverse = True)
+
+        # Pretty print and save
+        pretty = json.dumps(sortedItems, indent=4, sort_keys=True)
+        print(pretty)
+        open("last_items.json", "w").write(pretty)
 
 def isoToDatetime(isoTimeStr):
     """Returns a datetime object for the given ISO 8601 string as returned by the Google API."""
@@ -144,7 +149,7 @@ def score(item, tokens):
 def main():
     creds = auth()
     service = getService(creds)
-    searchWithTokens(service, ["adam"])
+    searchWithTokens(service, ["kelly", "unbun"])
 
 if __name__ == '__main__':
     main()
