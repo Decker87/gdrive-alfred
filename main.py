@@ -184,7 +184,7 @@ def renderForAlfred(items):
 def main():
     creds = auth()
     service = getService(creds)
-    sortedItems = searchWithTokens(service, ["eoy"])
+    sortedItems = searchWithTokens(service, ["chris", "eoy"])
     displayItems(sortedItems)
 
 if __name__ == '__main__':
