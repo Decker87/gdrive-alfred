@@ -68,7 +68,7 @@ def searchWithTokens(service, tokens):
         print('No files found.')
         return []
     else:
-        # Attach scores directly to the items; this is just easier
+        # Attach scores directly to the items; this is just easier than tracking separately
         for item in items:
             item["score"] = score(item, tokens)
 
