@@ -8,3 +8,5 @@
 * Support alfred input
 * Modularize in some way
 * Score list of items according to which contains more of the unique tokens, i.e. having a token that no other item has should be worth more
+* Use full text and maybe some TF-IDF type magic to index on terms unique to each document. Requires caching.
+* Score based on permissions, to weight when a permissioned user is on there that matches a token

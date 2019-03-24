@@ -55,16 +55,18 @@ def constructQuery(tokens):
     return q
 
 def searchWithTokens(service, tokens):
+    """Returns a list of items, sorted by score."""
     keywordFileFields = ["name", "owners", "spaces", "sharingUser"]
-    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "kind", "createdTime"]
+    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink"]
     fileFields = keywordFileFields + generalFileFields
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
     q = constructQuery(tokens)
-    results = service.files().list(pageSize=10, fields=fileFieldsStr, orderBy = "modifiedByMeTime desc, modifiedTime desc, ", q = q).execute()
+    results = service.files().list(pageSize=100, fields=fileFieldsStr, orderBy = "modifiedByMeTime desc, modifiedTime desc, ", q = q).execute()
     items = results.get('files', [])
 
     if not items:
         print('No files found.')
+        return []
     else:
         # Attach scores directly to the items; this is just easier
         for item in items:
@@ -72,11 +74,13 @@ def searchWithTokens(service, tokens):
 
         # Sort by scores
         sortedItems = sorted(items, key = lambda x: x["score"], reverse = True)
+        return sortedItems
 
-        # Pretty print and save
-        pretty = json.dumps(sortedItems, indent=4, sort_keys=True)
-        print(pretty)
-        open("last_items.json", "w").write(pretty)
+def displayItems(items):
+    # Pretty print and save
+    pretty = json.dumps(items, indent=4, sort_keys=True)
+    print(pretty)
+    open("last_items.json", "w").write(pretty)
 
 def isoToDatetime(isoTimeStr):
     """Returns a datetime object for the given ISO 8601 string as returned by the Google API."""
@@ -146,10 +150,42 @@ def score(item, tokens):
     score = (tokenScoreWeight / totalScoreWeight * tokenScore) + (recencyScoreWeight / totalScoreWeight * recencyScore)
     return score
 
+def renderForAlfred(items):
+    """Returns a list of items in a format conducive to alfred displaying it."""
+    # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format, something like:
+    # {"items": [
+    #     {
+    #         "uid": "desktop",
+    #         "type": "file",
+    #         "title": "Desktop",
+    #         "subtitle": "~/Desktop",
+    #         "arg": "~/Desktop",
+    #         "autocomplete": "Desktop",
+    #         "icon": {
+    #             "type": "fileicon",
+    #             "path": "~/Desktop"
+    #         }
+    #     }
+    # ]}
+
+    # Just to keep alfred quick, limit to top 20
+    alfredItems = []
+
+    for item in items[0:20]:
+        alfredItem = {}
+        alfredItem["title"] = item["name"]
+        alfredItem["arg"] = item["webViewLink"]
+        # TODO: Add icon
+
+        alfredItems.append(alfredItem)
+
+    return json.dumps({"items": alfredItems})
+
 def main():
     creds = auth()
     service = getService(creds)
-    searchWithTokens(service, ["kelly", "unbun"])
+    sortedItems = searchWithTokens(service, ["eoy"])
+    displayItems(sortedItems)
 
 if __name__ == '__main__':
     main()
