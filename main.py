@@ -222,11 +222,14 @@ def tokenize(s):
 
 def main():
     # Get input string as first arg and tokenize
+    # Early exits - still need to return empty results
     if len(sys.argv) < 2:
+        print(renderForAlfred([]))
         return
 
     tokens = tokenize(sys.argv[1])
     if len(tokens) < 1:
+        print(renderForAlfred([]))
         return
 
     # We have valid tokens so let's do it
