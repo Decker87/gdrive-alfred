@@ -3,6 +3,9 @@ import pickle
 import os.path
 import json
 import datetime
+import sys
+import os
+import errno
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -57,7 +60,7 @@ def constructQuery(tokens):
 def searchWithTokens(service, tokens):
     """Returns a list of items, sorted by score."""
     keywordFileFields = ["name", "owners", "spaces", "sharingUser"]
-    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink"]
+    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink"]
     fileFields = keywordFileFields + generalFileFields
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
     q = constructQuery(tokens)
@@ -74,13 +77,14 @@ def searchWithTokens(service, tokens):
 
         # Sort by scores
         sortedItems = sorted(items, key = lambda x: x["score"], reverse = True)
+        # Record for debugging
+        open("last_items.json", "w").write(json.dumps(sortedItems, indent=4, sort_keys=True))
         return sortedItems
 
 def displayItems(items):
     # Pretty print and save
     pretty = json.dumps(items, indent=4, sort_keys=True)
     print(pretty)
-    open("last_items.json", "w").write(pretty)
 
 def isoToDatetime(isoTimeStr):
     """Returns a datetime object for the given ISO 8601 string as returned by the Google API."""
@@ -150,6 +154,32 @@ def score(item, tokens):
     score = (tokenScoreWeight / totalScoreWeight * tokenScore) + (recencyScoreWeight / totalScoreWeight * recencyScore)
     return score
 
+def getIconPath(item):
+    """Returns a file path for a file to use as the icon. May be None."""
+    # No way to get an icon if it doesn't have one
+    if ("mimeType" not in item) or ("iconLink" not in item):
+        return None
+
+    # Always create the icons folder if it doesn't exist
+    try:
+        os.makedirs("icons")
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+
+    # Check if the icon exists based on the mimeType
+    iconPath = "icons/%s.png" % (item["mimeType"].replace("/", "-"))
+    if os.path.exists(iconPath):
+        return iconPath
+
+    # Grab the icon from the iconLink if we can
+    # Intentional lazy import
+    import urllib2
+    # Default link is to 16px version - get 128 cuz it aint 1993 boi
+    response = urllib2.urlopen(item["iconLink"].replace("/16/", "/128/"))
+    open(iconPath, "w").write(response.read())
+    return iconPath
+
 def renderForAlfred(items):
     """Returns a list of items in a format conducive to alfred displaying it."""
     # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format, something like:
@@ -175,17 +205,38 @@ def renderForAlfred(items):
         alfredItem = {}
         alfredItem["title"] = item["name"]
         alfredItem["arg"] = item["webViewLink"]
-        # TODO: Add icon
+
+        # For the icon, download it if we need to
+        iconPath = getIconPath(item)
+        if iconPath:
+            alfredItem["icon"] = {"path": iconPath}
 
         alfredItems.append(alfredItem)
 
-    return json.dumps({"items": alfredItems})
+    return json.dumps({"items": alfredItems}, indent=4, sort_keys=True)
+
+def tokenize(s):
+    '''Returns a list of strings that are tokens'''
+    # Don't count tokens under 3 chars; they will produce too much noise in the search
+    return [token for token in s.split(" ") if len(token) >= 3]
 
 def main():
+    # Get input string as first arg and tokenize
+    if len(sys.argv) < 2:
+        return
+
+    tokens = tokenize(sys.argv[1])
+    if len(tokens) < 1:
+        return
+
+    # We have valid tokens so let's do it
     creds = auth()
     service = getService(creds)
-    sortedItems = searchWithTokens(service, ["chris", "eoy"])
-    displayItems(sortedItems)
+    sortedItems = searchWithTokens(service, tokens)
+
+    # Output stuff to STDOUT
+    print(renderForAlfred(sortedItems))
+    #displayItems(sortedItems)
 
 if __name__ == '__main__':
     main()
