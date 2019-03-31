@@ -1,3 +1,5 @@
+# This script is used to build (package) a .alfredworkflow file.
+# If all goes right, it will end up at bin/gdrive-alfred.alfredworkflow
 packageName="gdrive-alfred.alfredworkflow"
 packagePath="bin/$packageName"
 mkdir "bin"
