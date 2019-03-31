@@ -1,11 +1,13 @@
-from __future__ import print_function
 import pickle
-import os.path
 import json
 import datetime
-import sys
+import os.path
 import os
 import errno
+import sys
+
+# These things may be packaged in pylib_dist folder as part of the release process
+sys.path.insert(0, "pylib_dist")
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
