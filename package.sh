@@ -11,5 +11,7 @@ pushd workflow_src
 zip -r "../bin/$packageName" *
 popd
 
-# Clean up
-rm -rf "workflow_src/pylib_dist"
+# Clean up if asked to
+if [[ "$1" == "--clean-up" ]]; then
+  rm -rf "workflow_src/pylib_dist"
+fi
