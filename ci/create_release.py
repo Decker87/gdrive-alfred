@@ -2,6 +2,7 @@ import requests
 import argparse
 import json
 import re
+import webbrowser
 
 # TODO: Comment this file
 
@@ -33,8 +34,11 @@ def createRelease(ghUser, ghToken, versionStr, name):
         "draft": True,
     }
     r = requests.post(url, auth=auth, json = data)
-    print(r)
     open("temp.txt", "w").write(json.dumps(r.json(), indent=2))
+    if r.status_code == 201:
+        # The html_url will by default be a view of the release, but we want to jump to editing it
+        editUrl = r.json()["html_url"].replace("/releases/tag/", "/releases/edit/")
+        webbrowser.open_new_tab(editUrl)
 
 def main():
     parser = argparse.ArgumentParser()
