@@ -11,29 +11,8 @@ jobs:
       - store_artifacts:
         path: bin/gdrive-alfred.alfredworkflow
         destination: gdrive-alfred.alfredworkflow
-  draft_release:
-    requires:
-      - build
-    docker:
-      - image: circleci/python:2.7.16
-    steps:
-      - checkout
-      - run:
-          name: Package to workflow file
-          command: du -sh *
 workflows:
   version: 2
   build:
     jobs:
       - build
-  build_and_draft_release:
-    triggers:
-      - schedule:
-          cron: "0 * * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - build
-      - draft_release
