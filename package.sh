@@ -1,6 +1,4 @@
-# Determine version
-version="1.`git rev-list --count HEAD`"
-packageName="gdrive-alfred-v$version.alfredworkflow"
+packageName="gdrive-alfred.alfredworkflow"
 packagePath="bin/$packageName"
 mkdir "bin"
 
