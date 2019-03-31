@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Package to workflow file
-          command: ./package.sh
+          command: ../ci/package.sh
   draft_release:
     requires:
       - build
