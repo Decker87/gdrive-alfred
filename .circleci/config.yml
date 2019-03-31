@@ -8,6 +8,9 @@ jobs:
       - run:
           name: Package to workflow file
           command: ../ci/package.sh
+      - store_artifacts:
+        path: bin/gdrive-alfred.alfredworkflow
+        destination: gdrive-alfred.alfredworkflow
   draft_release:
     requires:
       - build
