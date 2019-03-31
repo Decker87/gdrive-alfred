@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:2.7.16
+
+    steps:
+      - checkout
+      - run:
+          name: Package to workflow file
+          command: ./package.sh
