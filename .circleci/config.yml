@@ -8,3 +8,8 @@ jobs:
       - run:
           name: Package to workflow file
           command: ./package.sh
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
