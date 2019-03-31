@@ -7,10 +7,11 @@ jobs:
       - checkout
       - run:
           name: Package to workflow file
-          command: ../ci/package.sh
+          # Editing this file on windows can make it lose +x perms
+          command: chmod +x ci/package.sh && ci/package.sh
       - store_artifacts:
-        path: bin/gdrive-alfred.alfredworkflow
-        destination: gdrive-alfred.alfredworkflow
+          path: bin/gdrive-alfred.alfredworkflow
+          destination: gdrive-alfred.alfredworkflow
 workflows:
   version: 2
   build:
