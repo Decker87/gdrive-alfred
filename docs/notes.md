@@ -16,3 +16,8 @@ So, instead there is a semi-manual process:
 mkdir pylib_dist
 pip install --target=pylib_dist --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
+
+# Auto-updating
+
+Auto-updating with Alfred seems very troublesome to implement. Spent too much time on it already.
+Instead I can add a node to the workflow that spins off another process to update. Can easily scriptify checking the latest release and downloading it / unzipping it if it's a later version.
