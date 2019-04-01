@@ -179,30 +179,25 @@ def getIconPath(item):
     open(iconPath, "w").write(response.read())
     return iconPath
 
+def recordItemChoices(items):
+    """Records in a file all the choices the user had available. This is used
+    for recording data about which results were good or not."""
+    open("")
+
 def renderForAlfred(items):
     """Returns a list of items in a format conducive to alfred displaying it."""
-    # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format, something like:
-    # {"items": [
-    #     {
-    #         "uid": "desktop",
-    #         "type": "file",
-    #         "title": "Desktop",
-    #         "subtitle": "~/Desktop",
-    #         "arg": "~/Desktop",
-    #         "autocomplete": "Desktop",
-    #         "icon": {
-    #             "type": "fileicon",
-    #             "path": "~/Desktop"
-    #         }
-    #     }
-    # ]}
+    # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format
 
     # Just to keep alfred quick, limit to top 20
+    itemChoices = items[0:20]
     alfredItems = []
-
-    for item in items[0:20]:
+    for item in itemChoices:
         alfredItem = {}
         alfredItem["title"] = item["name"]
+
+        # Generate a UUID for the item - useful for recording choice data
+        id = uuid.uuid4().hex
+        item["uuid"] = id
         # Prepend a UUID to identify the choice later
         alfredItem["arg"] = "%s|%s" % (uuid.uuid4().hex, item["webViewLink"])
 
@@ -212,6 +207,8 @@ def renderForAlfred(items):
             alfredItem["icon"] = {"path": iconPath}
 
         alfredItems.append(alfredItem)
+
+    recordItemChoices(itemChoices)
 
     return json.dumps({"items": alfredItems}, indent=4, sort_keys=True)
 
