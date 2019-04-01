@@ -5,6 +5,7 @@ import os.path
 import os
 import errno
 import sys
+import uuid
 
 # These things may be packaged in pylib_dist folder as part of the release process
 sys.path.insert(0, "pylib_dist")
@@ -202,7 +203,8 @@ def renderForAlfred(items):
     for item in items[0:20]:
         alfredItem = {}
         alfredItem["title"] = item["name"]
-        alfredItem["arg"] = item["webViewLink"]
+        # Prepend a UUID to identify the choice later
+        alfredItem["arg"] = "%s|%s" % (uuid.uuid4().hex, item["webViewLink"])
 
         # For the icon, download it if we need to
         iconPath = getIconPath(item)
