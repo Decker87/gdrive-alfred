@@ -6,6 +6,7 @@ import os
 import errno
 import sys
 import uuid
+import requests
 
 # These things may be packaged in pylib_dist folder as part of the release process
 sys.path.insert(0, "pylib_dist")
@@ -172,11 +173,9 @@ def getIconPath(item):
         return iconPath
 
     # Grab the icon from the iconLink if we can
-    # Intentional lazy import
-    import urllib2
     # Default link is to 16px version - get 128 cuz it aint 1993 boi
-    response = urllib2.urlopen(item["iconLink"].replace("/16/", "/128/"))
-    open(iconPath, "w").write(response.read())
+    r = requests.get(item["iconLink"].replace("/16/", "/128/"))
+    open(iconPath, "wb").write(r.content)
     return iconPath
 
 def recordItemChoices(items):
