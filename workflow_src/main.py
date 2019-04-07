@@ -181,7 +181,7 @@ def getIconPath(item):
 def recordItemChoices(items):
     """Records in a file all the choices the user had available. This is used
     for recording data about which results were good or not."""
-    open("")
+    open("itemChoices.txt", "a").write(json.dumps(items))
 
 def renderForAlfred(items):
     """Returns a list of items in a format conducive to alfred displaying it."""
