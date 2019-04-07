@@ -1,5 +1,3 @@
-ls -lisa
-
 versionPath="workflow_src/VERSION.txt"
 
 # If the version increased in this commit, then roll a new version!
