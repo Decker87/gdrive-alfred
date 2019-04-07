@@ -2,13 +2,13 @@
 
 CricleCI does not currently support parameterized builds. This means I can't manually kick off a special workflow to package and create a github release.
 
-So, instead there is a semi-manual process:
+So, instead I've decided that any time I update the VERSION.txt file, that should tell CI to create a release and upload the .alfredworkflow file.
 
-1. Let circleci store the zip files as artifacts with each build
-2. Manually download the zip, goto https://circleci.com/gh/Decker87/gdrive-alfred/tree/master
-  1. Note: It may be possible to use the CircleCI API to do this step
-3. Use the create_release.py script to create a draft release with the zip uploaded.
-4. Don't forget to publish the draft release
+1. Change the VERSION.txt and push
+1. Let CircleCI do its thing, should result in draft release with file attached
+  1. Check https://circleci.com/gh/Decker87/gdrive-alfred/tree/master to watch
+1. Visit https://github.com/Decker87/gdrive-alfred/releases to see it
+1. Don't forget to publish the draft release
 
 # Install python libs and dependencies to local dir
 
