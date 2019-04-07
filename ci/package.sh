@@ -5,7 +5,7 @@ packagePath="bin/$packageName"
 mkdir "bin"
 
 # Install necessary packages locally
-pip install --upgrade --target=workflow_src/pylib_dist google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip install --upgrade --target=workflow_src/pylib_dist google-api-python-client google-auth-httplib2 google-auth-oauthlib requests
 
 # Zip it up (unfortunately zip util requires us to pushd to avoid copying workflow_src)
 pushd workflow_src
@@ -14,8 +14,3 @@ popd
 
 # Helpful msg
 du -sh "$packagePath"
-
-# Clean up if asked to
-if [[ "$1" == "--clean-up" ]]; then
-  rm -rf "workflow_src/pylib_dist"
-fi

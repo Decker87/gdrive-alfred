@@ -4,7 +4,7 @@ import json
 import re
 import webbrowser
 
-# TODO: Comment this file
+# When run, this script creates a new release in the GH repo!
 
 def getLatestRelease(ghUser, ghToken):
     auth = requests.auth.HTTPBasicAuth(ghUser, ghToken)
