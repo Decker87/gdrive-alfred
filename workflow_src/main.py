@@ -1,3 +1,4 @@
+import cPickle
 import pickle
 import json
 import datetime
@@ -6,87 +7,8 @@ import os
 import errno
 import sys
 import uuid
-import requests
 
-# These things may be packaged in pylib_dist folder as part of the release process
-sys.path.insert(0, "pylib_dist")
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-
-def auth():
-    """Returns a credentials object"""
-    scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly']
-
-    # token.pickle stores the user's access and refresh tokens
-    try:
-        creds = pickle.load(open('token.pickle', 'rb'))
-        return creds
-    except:
-        creds = None
-
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', scopes)
-            creds = flow.run_local_server()
-        # Save the credentials for the next run
-        pickle.dump(creds, open('token.pickle', 'wb'))
-
-    return creds
-
-def getService(creds):
-    """Returns a service object."""
-    service = build('drive', 'v3', credentials=creds)
-    return service
-
-def constructQuery(tokens):
-    """Returns a string suitable for the "q" parameter based on tokens"""
-    # each clause is something that gets "OR"ed together
-    clauses = []
-
-    # for each token, attempt to include it in any of the fields
-    for token in tokens:
-        clauses += ["(name contains '%s')" % (token)]
-        clauses += ["('%s' in owners)" % (token.capitalize())]
-        # Note: fullText will disable sorting
-        #clauses += ["(fullText contains '%s')" % (token)]
-
-    q = " or ".join(clauses)
-    return q
-
-def searchWithTokens(service, tokens):
-    """Returns a list of items, sorted by score."""
-    # Search syntax: https://developers.google.com/drive/api/v3/search-files
-    # Files.list() docs: https://developers.google.com/drive/api/v3/reference/files/list
-    keywordFileFields = ["name", "owners(displayName, emailAddress)", "spaces", "sharingUser(displayName, emailAddress)"]
-    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink"]
-    fileFields = keywordFileFields + generalFileFields
-    fileFieldsStr = "files(%s)" % (", ".join(fileFields))
-    q = constructQuery(tokens)
-    results = service.files().list(pageSize=100, fields=fileFieldsStr, orderBy = "modifiedByMeTime desc, modifiedTime desc, ", q = q).execute()
-    items = results.get('files', [])
-
-    if not items:
-        print('No files found.')
-        return []
-    else:
-        # Attach scores directly to the items; this is just easier than tracking separately
-        for item in items:
-            item["score"] = score(item, tokens)
-
-        # Sort by scores
-        sortedItems = sorted(items, key = lambda x: x["score"], reverse = True)
-        # Record for debugging
-        open("last_items.json", "w").write(json.dumps(sortedItems, indent=4, sort_keys=True))
-        return sortedItems
-
-def displayItems(items):
-    # Pretty print and save
-    pretty = json.dumps(items, indent=4, sort_keys=True)
-    print(pretty)
+CACHE_FILEPATH = "cache.pickle"
 
 def isoToDatetime(isoTimeStr):
     """Returns a datetime object for the given ISO 8601 string as returned by the Google API."""
@@ -96,7 +18,7 @@ def isoToDatetime(isoTimeStr):
     # We need to trim off the milliseconds, as there's no way to interpret it with strptime.
     return datetime.datetime.strptime(isoTimeStr[0:19], format)
 
-def score(item, tokens):
+def score(item, tokens, zeroOnZeroTokenScore = False):
     """Returns an overall relevance score for the item, based on the tokens and other factors.
     Note that these are currently a bunch of hand-tuned heuristics. It can get much smarter if
     needed."""
@@ -119,6 +41,9 @@ def score(item, tokens):
         # consider weighing by how many owners they are - more relevant if it's the only owner
         if token.lower() in item["owners"].__str__().lower():
             tokenScore += weightOwnerHit / totalTokenWeight / numTokens
+
+    if zeroOnZeroTokenScore and tokenScore == 0.0:
+        return 0.0
 
     # Subscore for recency
     recencyScore = 0.0
@@ -156,29 +81,19 @@ def score(item, tokens):
     score = (tokenScoreWeight / totalScoreWeight * tokenScore) + (recencyScoreWeight / totalScoreWeight * recencyScore)
     return score
 
-def getIconPath(item):
-    """Returns a file path for a file to use as the icon. May be None."""
-    # No way to get an icon if it doesn't have one
-    if ("mimeType" not in item) or ("iconLink" not in item):
-        return None
+def searchLocalCache(tokens):
+    items = cPickle.load(open(CACHE_FILEPATH))
+    
+    # Attach scores directly to the items; this is just easier than tracking separately
+    tokenMatchedItems = []
+    for item in items:
+        item["score"] = score(item, tokens, zeroOnZeroTokenScore = False)
+        if item["score"] > 0.0:
+            tokenMatchedItems.append(item)
 
-    # Always create the icons folder if it doesn't exist
-    try:
-        os.makedirs("icons")
-    except OSError as exc: # Guard against race condition
-        if exc.errno != errno.EEXIST:
-            raise
-
-    # Check if the icon exists based on the mimeType
-    iconPath = "icons/%s.png" % (item["mimeType"].replace("/", "-"))
-    if os.path.exists(iconPath):
-        return iconPath
-
-    # Grab the icon from the iconLink if we can
-    # Default link is to 16px version - get 128 cuz it aint 1993 boi
-    r = requests.get(item["iconLink"].replace("/16/", "/128/"))
-    open(iconPath, "wb").write(r.content)
-    return iconPath
+    # Sort by scores
+    sortedItems = sorted(tokenMatchedItems, key = lambda x: x["score"], reverse = True)
+    return sortedItems
 
 def recordItemChoices(items):
     """Records in a file all the choices the user had available. This is used
@@ -203,9 +118,8 @@ def renderForAlfred(items):
         alfredItem["arg"] = "%s|%s" % (uuid.uuid4().hex, item["webViewLink"])
 
         # For the icon, download it if we need to
-        iconPath = getIconPath(item)
-        if iconPath:
-            alfredItem["icon"] = {"path": iconPath}
+        if "iconPath" in item:
+            alfredItem["icon"] = {"path": item["iconPath"]}
 
         alfredItems.append(alfredItem)
 
@@ -231,13 +145,10 @@ def main():
         return
 
     # We have valid tokens so let's do it
-    creds = auth()
-    service = getService(creds)
-    sortedItems = searchWithTokens(service, tokens)
+    sortedItems = searchLocalCache(tokens)
 
     # Output stuff to STDOUT
     print(renderForAlfred(sortedItems))
-    #displayItems(sortedItems)
 
 if __name__ == '__main__':
     main()

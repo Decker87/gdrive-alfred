@@ -42,3 +42,9 @@ For an item list 781 docs long:
 * Iterating the list in-memory took less than 1ms total (basically neglectable)
 
 So I can calculate it 0.062ms per doc to load into memory. At 1000 docs this is 62ms. At 10k docs this is 620ms. Will reach a point where it's not practical if others are going to use it. Will need to store stuff in memory or explore SQLite querying. For now I can rely on cPickle loading to be fast enough.
+
+# One-liner to JSON-ify cache.pickle
+
+```
+json.dump(pickle.load(open("cache.pickle")), open("cache.json", "w"), indent = 4)
+```

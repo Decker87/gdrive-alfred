@@ -5,3 +5,4 @@ icons/
 pylib_dist/
 /itemChoices.txt
 /cache.pickle
+/cache.json
