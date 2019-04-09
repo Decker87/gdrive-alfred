@@ -59,7 +59,9 @@ def constructQuery(tokens):
 
 def searchWithTokens(service, tokens):
     """Returns a list of items, sorted by score."""
-    keywordFileFields = ["name", "owners", "spaces", "sharingUser"]
+    # Search syntax: https://developers.google.com/drive/api/v3/search-files
+    # Files.list() docs: https://developers.google.com/drive/api/v3/reference/files/list
+    keywordFileFields = ["name", "owners(displayName, emailAddress)", "spaces", "sharingUser(displayName, emailAddress)"]
     generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink"]
     fileFields = keywordFileFields + generalFileFields
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
