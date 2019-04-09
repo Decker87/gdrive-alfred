@@ -87,7 +87,7 @@ def searchLocalCache(tokens):
     # Attach scores directly to the items; this is just easier than tracking separately
     tokenMatchedItems = []
     for item in items:
-        item["score"] = score(item, tokens, zeroOnZeroTokenScore = False)
+        item["score"] = score(item, tokens, zeroOnZeroTokenScore = True)
         if item["score"] > 0.0:
             tokenMatchedItems.append(item)
 
