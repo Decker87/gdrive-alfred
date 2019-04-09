@@ -105,8 +105,8 @@ def main():
     while not waitingToDie:
         try:
             updateCache(service)
-        except:
-            pass
+        except Exception as e:
+            print(e)
         time.sleep(1)
 
 if __name__ == '__main__':
