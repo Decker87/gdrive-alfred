@@ -18,6 +18,16 @@
 				<key>vitoclose</key>
 				<false/>
 			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>513E4753-77AF-41DB-A2E1-A45BBD7AC3B2</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
 		</array>
 		<key>9A84D52F-CA55-496C-894E-D5880272E088</key>
 		<array>
@@ -43,6 +53,52 @@
 	<string>Adam's drive search</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query="{query}"
+id=$(echo "$query" | cut -d "|" -f 1)
+url=$(echo "$query" | cut -d "|" -f 2-)
+echo "$id" &gt;&gt; "chosen_ids.txt"
+echo -n "$url"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>9A84D52F-CA55-496C-894E-D5880272E088</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -95,37 +151,14 @@ python main.py "{query}"
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>browser</key>
-				<string></string>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>query="{query}"
-id=$(echo "$query" | cut -d "|" -f 1)
-url=$(echo "$query" | cut -d "|" -f 2-)
-echo "$id" &gt;&gt; "chosen_ids.txt"
-echo -n "$url"</string>
+				<string>./update_workflow_version.sh</string>
 				<key>scriptargtype</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>type</key>
@@ -134,7 +167,7 @@ echo -n "$url"</string>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>9A84D52F-CA55-496C-894E-D5880272E088</string>
+			<string>513E4753-77AF-41DB-A2E1-A45BBD7AC3B2</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
@@ -149,6 +182,15 @@ echo -n "$url"</string>
 			<integer>650</integer>
 			<key>ypos</key>
 			<integer>210</integer>
+		</dict>
+		<key>513E4753-77AF-41DB-A2E1-A45BBD7AC3B2</key>
+		<dict>
+			<key>note</key>
+			<string>Update workflow</string>
+			<key>xpos</key>
+			<integer>470</integer>
+			<key>ypos</key>
+			<integer>390</integer>
 		</dict>
 		<key>72583939-B156-493D-B520-B43629D5DF03</key>
 		<dict>
