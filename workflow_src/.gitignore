@@ -6,3 +6,4 @@ pylib_dist/
 /itemChoices.jsonlog
 /cache.pickle
 /cache.json
+/chosen_ids.txt
