@@ -14,8 +14,27 @@ from google.auth.transport.requests import Request
 CACHE_FILEPATH = "cache.pickle"
 
 def getService():
-    creds = cPickle.load(open('token.pickle', 'rb'))
-    service = build('drive', 'v3', credentials=creds)
+    """Returns a service object."""
+    scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly']
+
+    # token.pickle stores the user's access and refresh tokens
+    try:
+        creds = cPickle.load(open('token.pickle', 'rb'))
+        return creds
+    except:
+        creds = None
+
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', scopes)
+            creds = flow.run_local_server()
+        # Save the credentials for the next run
+        cPickle.dump(creds, open('token.pickle', 'wb'))
+
+    service = build('drive', 'v3', credentials = creds)
     return service
 
 def getIconPath(item):
