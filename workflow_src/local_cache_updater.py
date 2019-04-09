@@ -20,7 +20,6 @@ def getService():
     # token.pickle stores the user's access and refresh tokens
     try:
         creds = cPickle.load(open('token.pickle', 'rb'))
-        return creds
     except:
         creds = None
 
