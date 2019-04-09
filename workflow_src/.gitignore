@@ -3,6 +3,6 @@ bash.exe.stackdump
 icons/
 /last_items.json
 pylib_dist/
-/itemChoices.txt
+/itemChoices.jsonlog
 /cache.pickle
 /cache.json
