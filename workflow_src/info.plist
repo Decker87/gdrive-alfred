@@ -6,6 +6,19 @@
 	<string></string>
 	<key>connections</key>
 	<dict>
+		<key>513E4753-77AF-41DB-A2E1-A45BBD7AC3B2</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>B2163139-F18D-4B22-BFBA-833D9709E109</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>72583939-B156-493D-B520-B43629D5DF03</key>
 		<array>
 			<dict>
@@ -156,7 +169,7 @@ python main.py "{query}"
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./update_workflow_version.sh</string>
+				<string>python update_with_latest.py</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -170,6 +183,27 @@ python main.py "{query}"
 			<string>513E4753-77AF-41DB-A2E1-A45BBD7AC3B2</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>removeextension</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Adam's drive search update</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>B2163139-F18D-4B22-BFBA-833D9709E109</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -209,6 +243,13 @@ python main.py "{query}"
 			<integer>470</integer>
 			<key>ypos</key>
 			<integer>210</integer>
+		</dict>
+		<key>B2163139-F18D-4B22-BFBA-833D9709E109</key>
+		<dict>
+			<key>xpos</key>
+			<integer>650</integer>
+			<key>ypos</key>
+			<integer>390</integer>
 		</dict>
 	</dict>
 	<key>webaddress</key>

@@ -50,6 +50,7 @@ def updateToRelease(release):
 
     # Unzip it from memory
     ZipFile(StringIO(r.content)).extractall(".")
+    print("INFO: Updated Adam's drive search to %s" % (latestRelease["tag_name"]))
 
 def UpdateToLatestVersion():
     currentVersion = getCurrentVersion()
