@@ -123,7 +123,7 @@ echo "start `date`"" '{query}'" &gt;&gt; "query_log.txt"</string>
 id=$(echo "$query" | cut -d "|" -f 1)
 url=$(echo "$query" | cut -d "|" -f 2-)
 echo "$id" &gt;&gt; "chosen_ids.txt"
-echo "$url"</string>
+echo -n "$url"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
