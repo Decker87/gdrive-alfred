@@ -1,6 +1,7 @@
 bash.exe.stackdump
-token.pickle
+/token.pickle
 icons/
-last_items.json
+/last_items.json
 pylib_dist/
-itemChoices.txt
+/itemChoices.txt
+/cache.pickle
