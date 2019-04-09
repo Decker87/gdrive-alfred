@@ -41,7 +41,7 @@ def updateToRelease(release):
     else:
         print("ERROR: No asset called '%s'." % (assetName))
         return False
-    
+
     # Download it to memory
     r = requests.get(downloadUrl)
     if r.status_code != 200:
@@ -56,7 +56,7 @@ def UpdateToLatestVersion():
     latestRelease = getLatestRelease()
     latestVersion = latestRelease["tag_name"]
 
-    if not versionIsNewer(currentVersion, latestVersion):
+    if versionIsNewer(currentVersion, latestVersion):
         updateToRelease(latestRelease)
 
 def main():
