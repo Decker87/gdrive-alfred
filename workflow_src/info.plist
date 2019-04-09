@@ -69,9 +69,9 @@
 				<key>runningsubtext</key>
 				<string>"Searching..."</string>
 				<key>script</key>
-				<string>echo "start `date`"" '{query}'" &gt;&gt; "query_log.txt"
+				<string>./ensure_updater_running.sh 1&gt;/dev/null 2&gt;/dev/null
 python main.py "{query}"
-echo "start `date`"" '{query}'" &gt;&gt; "query_log.txt"</string>
+</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
