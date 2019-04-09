@@ -39,7 +39,7 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
         if "sharingUser" in item and token.lower() in item["sharingUser"].__str__().lower():
             tokenScore += weightSharingUserHit / totalTokenWeight / numTokens
         # consider weighing by how many owners they are - more relevant if it's the only owner
-        if token.lower() in item["owners"].__str__().lower():
+        if "owners" in item and token.lower() in item["owners"].__str__().lower():
             tokenScore += weightOwnerHit / totalTokenWeight / numTokens
 
     if zeroOnZeroTokenScore and tokenScore == 0.0:
