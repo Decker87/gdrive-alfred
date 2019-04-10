@@ -19,8 +19,12 @@ def versionIsNewer(oldVersion, newVersion):
 
     if newMajor > oldMajor:
         return True
+    if newMajor < oldMajor:
+        return False
     if newMinor > oldMinor:
         return True
+    if newMinor < oldMinor:
+        return False
     if newPatch > oldPatch:
         return True
 
@@ -50,7 +54,7 @@ def updateToRelease(release):
 
     # Unzip it from memory
     ZipFile(StringIO(r.content)).extractall(".")
-    print("INFO: Updated Adam's drive search to %s" % (latestRelease["tag_name"]))
+    print("INFO: Updated Adam's drive search to %s" % (release["tag_name"]))
 
 def UpdateToLatestVersion():
     currentVersion = getCurrentVersion()
