@@ -7,3 +7,4 @@ pylib_dist/
 /cache.pickle
 /cache.json
 /chosen_ids.txt
+/nohup.out
