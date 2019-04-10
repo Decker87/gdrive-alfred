@@ -82,7 +82,7 @@ def getFolderInfo(service, id):
         return knownFolderInfo[id]
 
     try:
-        result = service.files().get(fileId = id, fields="parents, name").execute()
+        result = service.files().get(fileId = id, fields="parents, name", supportsTeamDrives = True).execute()
     except:
         knownFolderInfo[id] = {"isReadable": False, "name": None, "realParentId": None}
         return knownFolderInfo[id]
@@ -103,7 +103,7 @@ def clearKnownFolderInfoCache():
     global knownFolderInfo
     knownFolderInfo.clear()
 
-def getFullParentTree(service, parents):
+def getFullParentList(service, parents):
     parentNameList = []
 
     currentParentId = parents[0]
@@ -147,7 +147,10 @@ def getItems(service):
         # Enrich with full parent tree
         for item in result["files"]:
             if "parents" in item:
-                item["fullParentTree"] = getFullParentTree(service, item["parents"])
+                fullParentList = getFullParentList(service, item["parents"])
+
+                if len(fullParentList) > 0:
+                    item["fullParentList"] = fullParentList
                 item.pop("parents") # Extra data, not needed
 
         items += result["files"]

@@ -10,3 +10,5 @@
 * Use full text and maybe some TF-IDF type magic to index on terms unique to each document. Requires caching.
 * Score based on permissions, to weight when a permissioned user is on there that matches a token
 * Sub-descriptions in alfred input containing some key stats
+* Filter out or down-score trashed items
+* Add team drive names to parent lists

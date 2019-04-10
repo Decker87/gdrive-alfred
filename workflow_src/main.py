@@ -121,6 +121,10 @@ def renderForAlfred(items):
         if "iconPath" in item:
             alfredItem["icon"] = {"path": item["iconPath"]}
 
+        # Use parent list as subtitle
+        if "fullParentList" in item:
+            alfredItem["subtitle"] = " >> ".join(item["fullParentList"])
+
         alfredItems.append(alfredItem)
 
     recordItemChoices(itemChoices)
