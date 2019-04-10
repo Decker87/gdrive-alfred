@@ -12,3 +12,4 @@
 * Sub-descriptions in alfred input containing some key stats
 * Filter out or down-score trashed items
 * Add team drive names to parent lists
+* Truncate parent lists to be presentable
