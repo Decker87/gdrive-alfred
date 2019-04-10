@@ -138,8 +138,8 @@ echo -n "$url"</string>
 				<key>runningsubtext</key>
 				<string>"Searching..."</string>
 				<key>script</key>
-				<string>./ensure_updater_running.sh 1&gt;/dev/null 2&gt;/dev/null
-python main.py "{query}"
+				<string>./ensure_local_cache_updater_running.sh 1&gt;/dev/null 2&gt;/dev/null
+python search_local_cache.py "{query}"
 </string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
@@ -190,7 +190,7 @@ python main.py "{query}"
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>python "update_with_latest.py"</string>
+				<string>python "update_workflow_to_latest_version.py"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
