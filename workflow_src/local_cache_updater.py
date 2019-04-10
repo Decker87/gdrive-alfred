@@ -4,6 +4,8 @@ import signal
 import os
 import requests
 import sys
+import json
+import traceback
 
 # Have to look in local folder - CI will pip install these locally
 sys.path.insert(0, "pylib_dist")
@@ -12,6 +14,16 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 CACHE_FILEPATH = "cache.pickle"
+CACHE_JSON_FILEPATH = "cache.json"
+
+# Stuff to gracefully handle SIGINT and SIGTERM
+waitingToDie = False    # Is this true of my life?
+def gracefullyDie(signum, frame):
+    global waitingToDie
+    print("Waiting to die gracefully...")
+    waitingToDie = True
+signal.signal(signal.SIGINT, gracefullyDie)
+signal.signal(signal.SIGTERM, gracefullyDie)
 
 def getService():
     """Returns a service object."""
@@ -95,7 +107,7 @@ def getFullParentTree(service, parents):
     parentNameList = []
 
     currentParentId = parents[0]
-    while True:
+    while not waitingToDie:
         folderInfo = getFolderInfo(service, currentParentId)
         
         # If we can't read it, then we can't do anything with it
@@ -111,8 +123,7 @@ def getFullParentTree(service, parents):
         else:
             break
 
-    r = " > ".join(parentNameList)
-    return r
+    return parentNameList
 
 def getItems(service):
     keywordFileFields = ["name", "owners(displayName, emailAddress)", "spaces", "sharingUser(displayName, emailAddress)"]
@@ -125,7 +136,7 @@ def getItems(service):
 
     # Continuously query, adding to items
     nextPageToken = None
-    while True:
+    while not waitingToDie:
         result = service.files().list(includeTeamDriveItems = True, supportsTeamDrives = True, fields = fields, pageToken = nextPageToken,
             pageSize = 1000, orderBy = "viewedByMeTime asc", q = "viewedByMeTime > '1970-01-01T00:00:00.000Z'").execute()
 
@@ -137,6 +148,7 @@ def getItems(service):
         for item in result["files"]:
             if "parents" in item:
                 item["fullParentTree"] = getFullParentTree(service, item["parents"])
+                item.pop("parents") # Extra data, not needed
 
         items += result["files"]
         print("items is now %i long" % (len(items)))
@@ -149,15 +161,7 @@ def updateCache(service):
     print("Updating local cache...")
     items = getItems(service)
     cPickle.dump(items, open(CACHE_FILEPATH, "w"))
-
-# Stuff to gracefully handle SIGINT and SIGTERM
-waitingToDie = False    # Is this true of my life?
-def gracefullyDie(signum, frame):
-    global waitingToDie
-    print("Waiting to die gracefully...")
-    waitingToDie = True
-signal.signal(signal.SIGINT, gracefullyDie)
-signal.signal(signal.SIGTERM, gracefullyDie)
+    json.dump(items, open(CACHE_JSON_FILEPATH, "w"), indent = 4)
 
 def main():
     """Continuously updates the cache."""
@@ -167,9 +171,9 @@ def main():
             # Clear the memoization table of directory info
             clearKnownFolderInfoCache()
             updateCache(service)
-        except Exception as e:
-            print(e)
-        time.sleep(1)
+        except Exception:
+            traceback.print_exc()
+        time.sleep(10)
 
 if __name__ == '__main__':
     main()
