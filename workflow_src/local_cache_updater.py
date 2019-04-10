@@ -59,9 +59,64 @@ def getIconPath(item):
     open(iconPath, "wb").write(r.content)
     return iconPath
 
+# Memoize to save time traversing the same parents, such as "My Drive"
+# Looks like: {id: {isReadable: True|False, name: bla|None, realParentId: sdaf|None}}
+knownFolderInfo = {}
+
+def getFolderInfo(service, id):
+    global knownFolderInfo
+
+    if id in knownFolderInfo:
+        return knownFolderInfo[id]
+
+    try:
+        result = service.files().get(fileId = id, fields="parents, name").execute()
+    except:
+        knownFolderInfo[id] = {"isReadable": False, "name": None, "realParentId": None}
+        return knownFolderInfo[id]
+    
+    # Edge cases: there can be multiple parents and some files are their own parent
+    # In the case of multiple parents, we select the first.
+    # If the file is its own parent, it has no "Real" parent
+    if "parents" in result and result["parents"][0] != id:
+        realParentId = result["parents"][0]
+    else:
+        realParentId = None
+    
+    knownFolderInfo[id] = {"isReadable": True, "name": result["name"], "realParentId": realParentId}
+
+    return knownFolderInfo[id]
+
+def clearKnownFolderInfoCache():
+    global knownFolderInfo
+    knownFolderInfo.clear()
+
+def getFullParentTree(service, parents):
+    parentNameList = []
+
+    currentParentId = parents[0]
+    while True:
+        folderInfo = getFolderInfo(service, currentParentId)
+        
+        # If we can't read it, then we can't do anything with it
+        if not folderInfo["isReadable"]:
+            break
+        
+        # Add it
+        parentNameList.insert(0, folderInfo["name"])
+
+        # Set up next iteration
+        if folderInfo["realParentId"]:
+            currentParentId = folderInfo["realParentId"]
+        else:
+            break
+
+    r = " > ".join(parentNameList)
+    return r
+
 def getItems(service):
     keywordFileFields = ["name", "owners(displayName, emailAddress)", "spaces", "sharingUser(displayName, emailAddress)"]
-    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink"]
+    generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink", "parents"]
     fileFields = keywordFileFields + generalFileFields
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
     fields = "nextPageToken, " + fileFieldsStr
@@ -77,6 +132,11 @@ def getItems(service):
         # Enrich with icon paths
         for item in result["files"]:
             item["iconPath"] = getIconPath(item)
+
+        # Enrich with full parent tree
+        for item in result["files"]:
+            if "parents" in item:
+                item["fullParentTree"] = getFullParentTree(service, item["parents"])
 
         items += result["files"]
         print("items is now %i long" % (len(items)))
@@ -104,6 +164,8 @@ def main():
     service = getService()
     while not waitingToDie:
         try:
+            # Clear the memoization table of directory info
+            clearKnownFolderInfoCache()
             updateCache(service)
         except Exception as e:
             print(e)
