@@ -7,8 +7,6 @@ import os
 # When run, this script creates a new release in the GH repo!
 
 def createRelease(ghUser, ghToken, version, name):
-    print(ghUser)
-    print(ghToken)
     auth = requests.auth.HTTPBasicAuth(ghUser, ghToken)
     url = "https://api.github.com/repos/Decker87/gdrive-alfred/releases"
     data = {
