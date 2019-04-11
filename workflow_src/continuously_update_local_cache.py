@@ -30,6 +30,7 @@ signal.signal(signal.SIGTERM, gracefullyDie)
 # Cleaner to just have these flags be global
 debugMode = False
 getAllFields = False
+spoofServer = False
 
 def getService():
     """Returns a service object."""
@@ -149,8 +150,11 @@ def getItems(service):
     # Continuously query, adding to items
     nextPageToken = None
     while not waitingToDie:
-        result = service.files().list(includeTeamDriveItems = True, supportsTeamDrives = True, fields = fields, pageToken = nextPageToken,
-            pageSize = pageSize, orderBy = "viewedByMeTime asc", q = "viewedByMeTime > '1970-01-01T00:00:00.000Z'").execute()
+        if not spoofServer:
+            result = service.files().list(includeTeamDriveItems = True, supportsTeamDrives = True, fields = fields, pageToken = nextPageToken,
+                pageSize = pageSize, orderBy = "viewedByMeTime asc", q = "viewedByMeTime > '1970-01-01T00:00:00.000Z'").execute()
+        else:
+            result = json.load(open("../test_data/files_list_resp.json"))
 
         if debugMode:
             json.dump(result, open("last_result.json", "w"), indent = 4)
@@ -185,14 +189,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", help="Debug mode", action="store_true")
     parser.add_argument("--all-fields", help="Query for all fields", action="store_true")
+    parser.add_argument("--spoof-server", help="Simulate interactions with remote server", action="store_true")
     args = parser.parse_args()
 
-    global debugMode, getAllFields
+    global debugMode, getAllFields, spoofServer
     debugMode = args.debug
     getAllFields = args.all_fields
+    spoofServer = args.spoof_server
 
     """Continuously updates the cache."""
-    service = getService()
+    service = getService() if not spoofServer else None
     while not waitingToDie:
         try:
             # Clear the memoization table of directory info

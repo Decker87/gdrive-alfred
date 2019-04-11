@@ -1,0 +1,113 @@
+{
+   "files": [
+        {
+            "mimeType": "application/pdf", 
+            "owners": [
+                {
+                    "emailAddress": "adam.schirmacher@gusto.com", 
+                    "displayName": "Adam Schirmacher"
+                }
+            ], 
+            "modifiedByMeTime": "2018-07-09T17:24:51.339Z", 
+            "name": "1Password Emergency Kit A3-56RLFM-gustohq.pdf", 
+            "modifiedTime": "2018-07-09T17:24:51.339Z", 
+            "webViewLink": "https://drive.google.com/a/zenpayroll.com/file/d/10Hiy0svMxwAX4IbPoJMdbEV1OQVkBgN8/view?usp=drivesdk", 
+            "spaces": [
+                "drive"
+            ], 
+            "createdTime": "2018-07-09T17:24:51.339Z", 
+            "viewedByMeTime": "2018-07-09T17:28:39.829Z", 
+            "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/pdf"
+        }, 
+        {
+            "mimeType": "application/vnd.google-apps.presentation", 
+            "owners": [
+                {
+                    "emailAddress": "edward@gusto.com", 
+                    "displayName": "Edward Kim"
+                }
+            ], 
+            "name": "Engineering Org Chart", 
+            "modifiedTime": "2019-01-21T20:00:36.549Z", 
+            "webViewLink": "https://docs.google.com/presentation/d/1LQQi95dPMl1DsfJAgGIU4mP6G5I-vvQ0bAcfydPD7qw/edit?usp=drivesdk", 
+            "spaces": [
+                "drive"
+            ], 
+            "createdTime": "2017-06-03T02:55:21.240Z", 
+            "viewedByMeTime": "2018-07-09T19:33:57.401Z", 
+            "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.presentation"
+        }, 
+        {
+            "mimeType": "application/vnd.google-apps.spreadsheet", 
+            "owners": [
+                {
+                    "emailAddress": "rebecca@gusto.com", 
+                    "displayName": "Rebecca Wollard"
+                }
+            ], 
+            "name": "Onboarding: Language of Gusto", 
+            "modifiedTime": "2017-12-19T17:58:16.551Z", 
+            "webViewLink": "https://docs.google.com/spreadsheets/d/1di0v7zSIFPkPKxNm--8BAqTLfYJaxxh6r6brKZRVfy4/edit?usp=drivesdk", 
+            "spaces": [
+                "drive"
+            ], 
+            "createdTime": "2017-12-13T18:18:25.308Z", 
+            "viewedByMeTime": "2018-07-10T17:45:46.411Z", 
+            "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.spreadsheet"
+        }, 
+        {
+            "mimeType": "application/vnd.google-apps.presentation", 
+            "owners": [
+                {
+                    "emailAddress": "courtney.linch@gusto.com", 
+                    "displayName": "Courtney Linch"
+                }
+            ], 
+            "name": "[CURRENT] Onboarding Welcome", 
+            "modifiedTime": "2019-02-19T17:07:07.755Z", 
+            "webViewLink": "https://docs.google.com/presentation/d/1P9yTfhQ0gHuhjtLTUZMNXp6xigrFJrL9z-JcMmp5Y2c/edit?usp=drivesdk", 
+            "spaces": [
+                "drive"
+            ], 
+            "createdTime": "2017-05-09T16:20:24.822Z", 
+            "viewedByMeTime": "2018-07-11T21:43:34.285Z", 
+            "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.presentation"
+        }, 
+        {
+            "mimeType": "application/vnd.google-apps.spreadsheet", 
+            "owners": [
+                {
+                    "emailAddress": "kelly.sutton@gusto.com", 
+                    "displayName": "Kelly Sutton"
+                }
+            ], 
+            "name": "Payroll Model Documentation Offsite", 
+            "modifiedTime": "2018-08-02T23:38:46.857Z", 
+            "webViewLink": "https://docs.google.com/spreadsheets/d/1tgzWrjCGkJLjTPlQO3Uuz42XJKqH0Mu13VUkVAGBt1c/edit?usp=drivesdk", 
+            "spaces": [
+                "drive"
+            ], 
+            "createdTime": "2018-04-23T17:19:16.024Z", 
+            "viewedByMeTime": "2018-07-12T20:07:09.353Z", 
+            "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.spreadsheet"
+        }, 
+        {
+            "mimeType": "application/vnd.google-apps.document", 
+            "owners": [
+                {
+                    "emailAddress": "kelly.sutton@gusto.com", 
+                    "displayName": "Kelly Sutton"
+                }
+            ], 
+            "name": "Payroll Model Documentation Offsite", 
+            "modifiedTime": "2018-07-12T22:10:43.781Z", 
+            "webViewLink": "https://docs.google.com/document/d/1uwEPYqv1Vl9dsAs3X51qrUigE2NfExOBT764XyaFifs/edit?usp=drivesdk", 
+            "spaces": [
+                "drive"
+            ], 
+            "createdTime": "2018-04-23T17:14:41.711Z", 
+            "viewedByMeTime": "2018-07-12T21:48:38.256Z", 
+            "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/application/vnd.google-apps.document"
+        }
+    ]
+}
