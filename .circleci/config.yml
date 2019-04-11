@@ -14,8 +14,26 @@ jobs:
       - run:
           name: Create GH Release
           command: ci/release_if_new_version.sh
+  test_py27:
+    docker:
+      - image: circleci/python:2.7
+    steps:
+      - checkout
+      - run:
+          name: e2e test
+          command: cd workflow_src && ../tests/e2e.sh
+  test_py34:
+    docker:
+      - image: circleci/python:3.4
+    steps:
+      - checkout
+      - run:
+          name: e2e test
+          command: cd workflow_src && ../tests/e2e.sh
 workflows:
   version: 2
   build:
     jobs:
+      - test_27
+      - test_34
       - build
