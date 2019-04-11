@@ -4,10 +4,6 @@ packageName="gdrive-alfred.alfredworkflow"
 packagePath="bin/$packageName"
 mkdir "bin"
 
-# Get some info about default python packages
-python -V
-python -c "help('modules')"
-
 # Install necessary packages locally
 pip install --upgrade --target=workflow_src/pylib_dist google-api-python-client google-auth-httplib2 google-auth-oauthlib requests
 
