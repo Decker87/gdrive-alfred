@@ -16,6 +16,7 @@ from google.auth.transport.requests import Request
 
 CACHE_FILEPATH = "cache.pickle"
 CACHE_JSON_FILEPATH = "cache.json"
+EXCEPTIONLOG_FILEPATH = "exceptions.log"
 
 # Stuff to gracefully handle SIGINT and SIGTERM
 waitingToDie = False    # Is this true of my life?
@@ -198,7 +199,9 @@ def main():
             clearKnownFolderInfoCache()
             updateCache(service)
         except Exception:
-            traceback.print_exc()
+            exceptionStr = "%s\n%s%s" % ("#"*40, traceback.format_exc(), "#"*40)
+            print(exceptionStr)
+            open(EXCEPTIONLOG_FILEPATH, "a").write(exceptionStr + "\n")
         if debugMode:
             break
         time.sleep(10)

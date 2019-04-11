@@ -10,3 +10,4 @@ pylib_dist/
 /nohup.out
 /continuously_update_local_cache.pyc
 /last_result.json
+/exceptions.log
