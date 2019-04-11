@@ -1,6 +1,6 @@
 import requests
 from zipfile import ZipFile
-from StringIO import StringIO
+from io import BytesIO
 
 # Overall design in this file = catch exceptions at high level and abort if there are any
 
@@ -53,7 +53,7 @@ def updateToRelease(release):
         return False
 
     # Unzip it from memory
-    ZipFile(StringIO(r.content)).extractall(".")
+    ZipFile(BytesIO(r.content)).extractall(".")
     print("INFO: Updated to version %s" % (release["tag_name"]))
 
 def UpdateToLatestVersion():
