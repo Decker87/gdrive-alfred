@@ -8,3 +8,5 @@ pylib_dist/
 /cache.json
 /chosen_ids.txt
 /nohup.out
+/continuously_update_local_cache.pyc
+/last_result.json

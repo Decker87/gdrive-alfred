@@ -6,6 +6,7 @@ import requests
 import sys
 import json
 import traceback
+import argparse
 
 # Have to look in local folder - CI will pip install these locally
 sys.path.insert(0, "pylib_dist")
@@ -24,6 +25,10 @@ def gracefullyDie(signum, frame):
     waitingToDie = True
 signal.signal(signal.SIGINT, gracefullyDie)
 signal.signal(signal.SIGTERM, gracefullyDie)
+
+# Cleaner to just have these flags be global
+debugMode = False
+getAllFields = False
 
 def getService():
     """Returns a service object."""
@@ -81,8 +86,10 @@ def getFolderInfo(service, id):
     if id in knownFolderInfo:
         return knownFolderInfo[id]
 
+    fields = "*" if getAllFields else "parents, name"
+
     try:
-        result = service.files().get(fileId = id, fields="parents, name", supportsTeamDrives = True).execute()
+        result = service.files().get(fileId = id, fields=fields, supportsTeamDrives = True).execute()
     except:
         knownFolderInfo[id] = {"isReadable": False, "name": None, "realParentId": None}
         return knownFolderInfo[id]
@@ -132,13 +139,20 @@ def getItems(service):
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
     fields = "nextPageToken, " + fileFieldsStr
 
+    # Debug mode overrides
+    pageSize = 10 if debugMode else 1000
+    fields = "*" if getAllFields else fields
+
     items = []
 
     # Continuously query, adding to items
     nextPageToken = None
     while not waitingToDie:
         result = service.files().list(includeTeamDriveItems = True, supportsTeamDrives = True, fields = fields, pageToken = nextPageToken,
-            pageSize = 1000, orderBy = "viewedByMeTime asc", q = "viewedByMeTime > '1970-01-01T00:00:00.000Z'").execute()
+            pageSize = pageSize, orderBy = "viewedByMeTime asc", q = "viewedByMeTime > '1970-01-01T00:00:00.000Z'").execute()
+
+        if debugMode:
+            json.dump(result, open("last_result.json", "w"), indent = 4)
 
         # Enrich with icon paths
         for item in result["files"]:
@@ -155,7 +169,7 @@ def getItems(service):
 
         items += result["files"]
         print("items is now %i long" % (len(items)))
-        if "nextPageToken" in result:
+        if not debugMode and "nextPageToken" in result:
             nextPageToken = result["nextPageToken"]
         else:
             return items
@@ -167,6 +181,15 @@ def updateCache(service):
     json.dump(items, open(CACHE_JSON_FILEPATH, "w"), indent = 4)
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", help="Debug mode", action="store_true")
+    parser.add_argument("--all-fields", help="Query for all fields", action="store_true")
+    args = parser.parse_args()
+
+    global debugMode, getAllFields
+    debugMode = args.debug
+    getAllFields = args.all_fields
+
     """Continuously updates the cache."""
     service = getService()
     while not waitingToDie:
@@ -176,6 +199,8 @@ def main():
             updateCache(service)
         except Exception:
             traceback.print_exc()
+        if debugMode:
+            break
         time.sleep(10)
 
 if __name__ == '__main__':
