@@ -5,7 +5,7 @@ packagePath="bin/$packageName"
 mkdir "bin"
 
 # Install necessary packages locally
-pip install --upgrade --target=workflow_src/pylib_dist google-api-python-client google-auth-httplib2 google-auth-oauthlib requests
+ci/install_nonstandard_packages_locally.sh "workflow_src/pylib_dist"
 
 # Zip it up (unfortunately zip util requires us to pushd to avoid copying workflow_src)
 pushd workflow_src

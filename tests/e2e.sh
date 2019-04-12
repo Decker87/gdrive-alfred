@@ -1,4 +1,6 @@
-# Meant to be run from workflow_src
+# Meant to be run from base dir
+cd "workflow_src"
+ci/install_nonstandard_packages_locally.sh "pylib_dist"
 rm cache.json cache.pickle
 python continuously_update_local_cache.py --spoof-server --debug
 python search_local_cache.py "Edward" | tee out.txt

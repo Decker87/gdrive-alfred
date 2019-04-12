@@ -48,3 +48,9 @@ So I can calculate it 0.062ms per doc to load into memory. At 1000 docs this is 
 ```
 json.dump(pickle.load(open("cache.pickle")), open("cache.json", "w"), indent = 4)
 ```
+
+# Change file perms on windows
+
+```
+git update-index --chmod=+x <file>
+```
