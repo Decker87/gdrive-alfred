@@ -2,7 +2,6 @@ import pickle
 import time
 import signal
 import os
-import requests
 import sys
 import json
 import traceback
@@ -10,6 +9,7 @@ import argparse
 
 # Have to look in local folder - CI will pip install these locally
 sys.path.insert(0, "pylib_dist")
+import requests
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
