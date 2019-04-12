@@ -5,7 +5,7 @@ from io import BytesIO
 # Overall design in this file = catch exceptions at high level and abort if there are any
 
 def getCurrentVersion():
-    return open("VERSION.txt", "r").read()
+    return open("VERSION.txt", "r").read().strip()
 
 def getLatestRelease():
     r = requests.get("https://api.github.com/repos/Decker87/gdrive-alfred/releases/latest")
