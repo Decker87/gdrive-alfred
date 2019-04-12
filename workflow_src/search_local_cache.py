@@ -1,5 +1,3 @@
-import cPickle
-import pickle
 import json
 import datetime
 import os.path
@@ -8,7 +6,7 @@ import errno
 import sys
 import uuid
 
-CACHE_FILEPATH = "cache.pickle"
+CACHE_FILEPATH = "cache.json"
 
 def isoToDatetime(isoTimeStr):
     """Returns a datetime object for the given ISO 8601 string as returned by the Google API."""
@@ -82,7 +80,7 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
     return score
 
 def searchLocalCache(tokens):
-    items = cPickle.load(open(CACHE_FILEPATH))
+    items = json.load(open(CACHE_FILEPATH))
     
     # Attach scores directly to the items; this is just easier than tracking separately
     tokenMatchedItems = []

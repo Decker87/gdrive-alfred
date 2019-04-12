@@ -1,4 +1,4 @@
-import cPickle
+import pickle
 import time
 import signal
 import os
@@ -14,8 +14,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-CACHE_FILEPATH = "cache.pickle"
-CACHE_JSON_FILEPATH = "cache.json"
+CACHE_FILEPATH = "cache.json"
 EXCEPTIONLOG_FILEPATH = "exceptions.log"
 
 # Stuff to gracefully handle SIGINT and SIGTERM
@@ -38,7 +37,7 @@ def getService():
 
     # token.pickle stores the user's access and refresh tokens
     try:
-        creds = cPickle.load(open('token.pickle', 'rb'))
+        creds = pickle.load(open('token.pickle', 'rb'))
     except:
         creds = None
 
@@ -50,7 +49,7 @@ def getService():
             flow = InstalledAppFlow.from_client_secrets_file('credentials.json', scopes)
             creds = flow.run_local_server()
         # Save the credentials for the next run
-        cPickle.dump(creds, open('token.pickle', 'wb'))
+        pickle.dump(creds, open('token.pickle', 'wb'))
 
     service = build('drive', 'v3', credentials = creds)
     return service
@@ -182,8 +181,7 @@ def getItems(service):
 def updateCache(service):
     print("Updating local cache...")
     items = getItems(service)
-    cPickle.dump(items, open(CACHE_FILEPATH, "w"))
-    json.dump(items, open(CACHE_JSON_FILEPATH, "w"), indent = 4)
+    json.dump(items, open(CACHE_FILEPATH, "w"), indent = 4)
 
 def main():
     parser = argparse.ArgumentParser()
