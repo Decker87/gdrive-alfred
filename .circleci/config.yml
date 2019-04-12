@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  build:
+  package:
     docker:
-      - image: circleci/python:2.7.16
+      - image: circleci/python:2.7
     steps:
       - checkout
       - run:
@@ -16,7 +16,7 @@ jobs:
           command: ci/release_if_new_version.sh
   test_py27:
     docker:
-      - image: circleci/python:2.7
+      - image: circleci/python:2.7.13
     steps:
       - checkout
       - run:
@@ -32,8 +32,11 @@ jobs:
           command: tests/e2e.sh
 workflows:
   version: 2
-  build:
+  test_and_package:
     jobs:
-      - test_27
-      - test_34
-      - build
+      - test_py27
+      - test_py34
+      - package:
+          requires:
+            - test_py27
+            - test_py34
