@@ -1,7 +1,10 @@
-import json
 import datetime
 import sys
 import uuid
+
+# Have to look in local folder - CI will pip install these locally
+sys.path.insert(0, "pylib_dist")
+import ujson
 
 CACHE_FILEPATH = "cache.json"
 
@@ -77,7 +80,7 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
     return score
 
 def searchLocalCache(tokens):
-    items = json.load(open(CACHE_FILEPATH))
+    items = ujson.load(open(CACHE_FILEPATH))
     
     # Attach scores directly to the items; this is just easier than tracking separately
     tokenMatchedItems = []
@@ -93,7 +96,7 @@ def searchLocalCache(tokens):
 def recordItemChoices(items):
     """Records in a file all the choices the user had available. This is used
     for recording data about which results were good or not."""
-    open("itemChoices.jsonlog", "a").write(json.dumps(items))
+    open("itemChoices.jsonlog", "a").write(ujson.dumps(items))
 
 def renderForAlfred(items):
     """Returns a list of items in a format conducive to alfred displaying it."""
@@ -124,7 +127,7 @@ def renderForAlfred(items):
 
     recordItemChoices(itemChoices)
 
-    return json.dumps({"items": alfredItems}, indent=4, sort_keys=True)
+    return ujson.dumps({"items": alfredItems}, indent=4, sort_keys=True)
 
 def tokenize(s):
     '''Returns a list of strings that are tokens'''
