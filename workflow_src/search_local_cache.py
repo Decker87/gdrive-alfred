@@ -80,7 +80,10 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
     return score
 
 def searchLocalCache(tokens):
-    items = ujson.load(open(CACHE_FILEPATH))
+    try:
+        items = ujson.load(open(CACHE_FILEPATH))
+    except:
+        return None
     
     # Attach scores directly to the items; this is just easier than tracking separately
     tokenMatchedItems = []
@@ -101,6 +104,14 @@ def recordItemChoices(items):
 def renderForAlfred(items):
     """Returns a list of items in a format conducive to alfred displaying it."""
     # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format
+
+    # If items is None, that indicates the cache could not be read.
+    if items == None:
+        d = {}
+        d["title"] = "Updating cache, try again in a few minutes."
+        d["subtitle"] = "This is normal on first installation."
+        d["icon"] = {"path": "hourglass.png"}
+        return ujson.dumps({"items": [d]}, indent=4)
 
     # Just to keep alfred quick, limit to top 20
     itemChoices = items[0:20]
@@ -127,7 +138,7 @@ def renderForAlfred(items):
 
     recordItemChoices(itemChoices)
 
-    return ujson.dumps({"items": alfredItems}, indent=4, sort_keys=True)
+    return ujson.dumps({"items": alfredItems}, indent=4)
 
 def tokenize(s):
     '''Returns a list of strings that are tokens'''
