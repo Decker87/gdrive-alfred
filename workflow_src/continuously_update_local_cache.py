@@ -14,8 +14,10 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+# Globals / settings
 CACHE_FILEPATH = "cache.json"
 EXCEPTIONLOG_FILEPATH = "exceptions.log"
+FLOW_TIMEOUT = 60
 
 # Stuff to gracefully handle SIGINT and SIGTERM
 waitingToDie = False    # Is this true of my life?
@@ -43,11 +45,18 @@ def getService():
 
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
+        # Custom signal logic to keep from blocking forever
+        def alarmHandler(signum, frame): exit()
+        signal.signal(signal.SIGALRM, alarmHandler)
+
+        signal.alarm(FLOW_TIMEOUT)  # Set an alarm
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file('credentials.json', scopes)
             creds = flow.run_local_server()
+        signal.alarm(0) # Cancel the alarm
+
         # Save the credentials for the next run
         pickle.dump(creds, open('token.pickle', 'wb'))
 
