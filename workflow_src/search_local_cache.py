@@ -1,8 +1,5 @@
 import json
 import datetime
-import os.path
-import os
-import errno
 import sys
 import uuid
 
