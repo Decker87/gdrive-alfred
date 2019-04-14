@@ -2,6 +2,8 @@
 
 This is a worflow for the Mac software "Alfred", which allows you to quickly (with a few keystrokes) find all your google docs. 
 
+![Screenshot](screenshot.png "Screenshot")
+
 # Installation
 
 You need to purchase the full version of Alfred to use workflows. If you don't have it, you should get it. It's well worth it.
