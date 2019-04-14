@@ -146,7 +146,7 @@ python search_local_cache.py "{query}"
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>subtext</string>
+				<string>(Adam's drive search)</string>
 				<key>title</key>
 				<string>Search G-Drive for search terms...</string>
 				<key>type</key>
