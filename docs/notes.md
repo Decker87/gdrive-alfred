@@ -17,21 +17,11 @@ mkdir pylib_dist
 pip install --target=pylib_dist --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
 
-# Auto-updating
-
-Auto-updating with Alfred seems very troublesome to implement. Spent too much time on it already.
-Instead I can add a node to the workflow that spins off another process to update. Can easily scriptify checking the latest release and downloading it / unzipping it if it's a later version.
-
-# Faster searching
-
-Possible to create local cache of stuff. Within reach to cache all info about all files ever viewed by me.
+# Delete a remote git tag (rendering release a draft)
 
 ```
-service.files().list(fields = "*", pageToken = nextPageToken, pageSize = 1000, orderBy = "viewedByMeTime asc", q = "viewedByMeTime > '1970-01-01T00:00:00.000Z'").execute()
+tag=1.1.1; git tag -d $tag; git push origin :refs/tags/$tag
 ```
-
-Maybe the next iteration can be utilizing a local cache, load it into memory and iterate those. Want to get time down to 0.1s or less.
-Start with naive approach - load all the shit into memory, then 
 
 # Perf notes
 
@@ -42,6 +32,8 @@ For an item list 781 docs long:
 * Iterating the list in-memory took less than 1ms total (basically neglectable)
 
 So I can calculate it 0.062ms per doc to load into memory. At 1000 docs this is 62ms. At 10k docs this is 620ms. Will reach a point where it's not practical if others are going to use it. Will need to store stuff in memory or explore SQLite querying. For now I can rely on cPickle loading to be fast enough.
+
+Fastest method is ujson. HTTP calls seem to have 167ms overhead at least. Only potentially faster method is sqlite.
 
 # One-liner to JSON-ify cache.pickle
 
