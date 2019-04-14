@@ -1,6 +1,10 @@
-import requests
+import sys
 from zipfile import ZipFile
 from io import BytesIO
+
+# Have to look in local folder - CI will pip install these locally
+sys.path.insert(0, "pylib_dist")
+import requests
 
 # Overall design in this file = catch exceptions at high level and abort if there are any
 
