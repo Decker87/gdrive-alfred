@@ -82,6 +82,8 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
 def searchLocalCache(tokens):
     try:
         items = ujson.load(open(CACHE_FILEPATH))
+        if items == None:   # If cache reads "null"
+            return None
     except:
         return None
     
