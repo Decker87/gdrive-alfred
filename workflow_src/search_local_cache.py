@@ -142,8 +142,8 @@ def renderForAlfred(items):
 
 def tokenize(s):
     '''Returns a list of strings that are tokens'''
-    # Don't count tokens under 3 chars; they will produce too much noise in the search
-    return [token for token in s.split(" ") if len(token) >= 3]
+    # Don't count tokens under 2 chars; they will produce too much noise in the search
+    return [token for token in s.split(" ") if len(token) >= 2]
 
 def main():
     # Get input string as first arg and tokenize
