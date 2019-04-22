@@ -176,7 +176,7 @@ echo -n "$url"</string>
 				<key>script</key>
 				<string>./ensure_script_running.sh "continuously_update_local_cache.py" 1&gt;/dev/null 2&gt;/dev/null
 ./ensure_script_running.sh "continuously_get_latest_workflow_version.py" 1&gt;/dev/null 2&gt;/dev/null
-python search_local_cache.py "{query}"
+python main.py "{query}"
 </string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
