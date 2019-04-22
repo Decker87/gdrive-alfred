@@ -10,3 +10,5 @@
 * Filter out or down-score trashed items
 * Add team drive names to parent lists
 * Truncate parent lists to be presentable
+* Separate workflow versioning crap from search scripts
+* Refactor flow of adding update item to output list - tech debt

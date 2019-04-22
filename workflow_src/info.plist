@@ -6,11 +6,11 @@
 	<string></string>
 	<key>connections</key>
 	<dict>
-		<key>31F6A0F7-2A33-4A1C-9DE1-DFFE39CDECD7</key>
+		<key>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>2C83C8A9-23E6-43D2-9D02-51C1EEC24CDF</string>
+				<string>EA11CAB7-FEF2-4893-B060-FEA746A3AAA9</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -31,9 +31,22 @@
 				<key>vitoclose</key>
 				<false/>
 			</dict>
+		</array>
+		<key>9A84D52F-CA55-496C-894E-D5880272E088</key>
+		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>31F6A0F7-2A33-4A1C-9DE1-DFFE39CDECD7</string>
+				<string>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -42,7 +55,7 @@
 				<false/>
 			</dict>
 		</array>
-		<key>9A84D52F-CA55-496C-894E-D5880272E088</key>
+		<key>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
@@ -69,19 +82,42 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>browser</key>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>open "latest/gdrive-alfred.alfredworkflow"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
 				<string></string>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
+				<key>type</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</string>
+			<string>EA11CAB7-FEF2-4893-B060-FEA746A3AAA9</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>inputstring</key>
+				<string>{query}</string>
+				<key>matchcasesensitive</key>
+				<true/>
+				<key>matchmode</key>
+				<integer>0</integer>
+				<key>matchstring</key>
+				<string>UPDATE</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.filter</string>
+			<key>uid</key>
+			<string>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -138,7 +174,8 @@ echo -n "$url"</string>
 				<key>runningsubtext</key>
 				<string>"Searching..."</string>
 				<key>script</key>
-				<string>./ensure_local_cache_updater_running.sh 1&gt;/dev/null 2&gt;/dev/null
+				<string>./ensure_script_running.sh "continuously_update_local_cache.py" 1&gt;/dev/null 2&gt;/dev/null
+./ensure_script_running.sh "continuously_get_latest_workflow_version.py" 1&gt;/dev/null 2&gt;/dev/null
 python search_local_cache.py "{query}"
 </string>
 				<key>scriptargtype</key>
@@ -164,46 +201,40 @@ python search_local_cache.py "{query}"
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>lastpathcomponent</key>
-				<false/>
-				<key>onlyshowifquerypopulated</key>
-				<true/>
-				<key>removeextension</key>
-				<false/>
-				<key>text</key>
+				<key>inputstring</key>
 				<string>{query}</string>
-				<key>title</key>
-				<string>Adam's drive searcher updated</string>
+				<key>matchcasesensitive</key>
+				<true/>
+				<key>matchmode</key>
+				<integer>1</integer>
+				<key>matchstring</key>
+				<string>UPDATE</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.output.notification</string>
+			<string>alfred.workflow.utility.filter</string>
 			<key>uid</key>
-			<string>2C83C8A9-23E6-43D2-9D02-51C1EEC24CDF</string>
+			<string>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>python "update_workflow_to_latest_version.py"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
+				<key>browser</key>
 				<string></string>
-				<key>type</key>
-				<integer>0</integer>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
-			<string>31F6A0F7-2A33-4A1C-9DE1-DFFE39CDECD7</string>
+			<string>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -213,23 +244,18 @@ python search_local_cache.py "{query}"
 		<key>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</key>
 		<dict>
 			<key>xpos</key>
-			<integer>650</integer>
+			<integer>830</integer>
 			<key>ypos</key>
-			<integer>210</integer>
+			<integer>290</integer>
 		</dict>
-		<key>2C83C8A9-23E6-43D2-9D02-51C1EEC24CDF</key>
+		<key>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</key>
 		<dict>
+			<key>note</key>
+			<string>UPDATE</string>
 			<key>xpos</key>
-			<integer>650</integer>
+			<integer>690</integer>
 			<key>ypos</key>
-			<integer>400</integer>
-		</dict>
-		<key>31F6A0F7-2A33-4A1C-9DE1-DFFE39CDECD7</key>
-		<dict>
-			<key>xpos</key>
-			<integer>470</integer>
-			<key>ypos</key>
-			<integer>400</integer>
+			<integer>180</integer>
 		</dict>
 		<key>72583939-B156-493D-B520-B43629D5DF03</key>
 		<dict>
@@ -248,6 +274,24 @@ python search_local_cache.py "{query}"
 			<integer>470</integer>
 			<key>ypos</key>
 			<integer>210</integer>
+		</dict>
+		<key>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</key>
+		<dict>
+			<key>note</key>
+			<string>NO UPDATE</string>
+			<key>xpos</key>
+			<integer>690</integer>
+			<key>ypos</key>
+			<integer>290</integer>
+		</dict>
+		<key>EA11CAB7-FEF2-4893-B060-FEA746A3AAA9</key>
+		<dict>
+			<key>note</key>
+			<string>Open update file</string>
+			<key>xpos</key>
+			<integer>830</integer>
+			<key>ypos</key>
+			<integer>120</integer>
 		</dict>
 	</dict>
 	<key>webaddress</key>

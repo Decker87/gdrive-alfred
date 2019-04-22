@@ -6,7 +6,10 @@ import uuid
 sys.path.insert(0, "pylib_dist")
 import ujson
 
+# Settings
 CACHE_FILEPATH = "cache.json"
+LATEST_WORKFLOW_PATH = "latest/gdrive-alfred.alfredworkflow"
+LATEST_VERSION_PATH = "latest/VERSION.txt"
 
 def isoToDatetime(isoTimeStr):
     """Returns a datetime object for the given ISO 8601 string as returned by the Google API."""
@@ -147,6 +150,53 @@ def tokenize(s):
     # Don't count tokens under 2 chars; they will produce too much noise in the search
     return [token for token in s.split(" ") if len(token) >= 2]
 
+def getCurrentVersion():
+    try:
+        return open("VERSION.txt").read().strip()
+    except:
+        return None
+
+def getDownloadedVersion():
+    try:
+        return open(LATEST_VERSION_PATH).read().strip()
+    except:
+        return None
+
+def versionIsNewer(oldVersion, newVersion):
+    oldMajor, oldMinor, oldPatch = [int(x) for x in oldVersion.split(".")]
+    newMajor, newMinor, newPatch = [int(x) for x in newVersion.split(".")]
+
+    if newMajor > oldMajor:
+        return True
+    if newMajor < oldMajor:
+        return False
+    if newMinor > oldMinor:
+        return True
+    if newMinor < oldMinor:
+        return False
+    if newPatch > oldPatch:
+        return True
+
+    return False
+
+def getWorkflowUpdateAlfredItem():
+    '''Returns None or a dict containing an item for alfred.'''
+    currentVersion = getCurrentVersion()
+    downloadedVersion = getDownloadedVersion()
+
+    if not currentVersion or not downloadedVersion:
+        return None
+
+    if not versionIsNewer(currentVersion, downloadedVersion):
+        return None
+
+    return {
+        "title": "An update is available!",
+        "subtitle": "Click here to update from %s to %s." % (currentVersion, downloadedVersion),
+        "icon": {"path": "update.png"},
+        "arg": "%s|%s" % (uuid.uuid4().hex, "UPDATE")
+    }
+
 def main():
     # Get input string as first arg and tokenize
     # Early exits - still need to return empty results
@@ -163,7 +213,16 @@ def main():
     sortedItems = searchLocalCache(tokens)
 
     # Output stuff to STDOUT
-    print(renderForAlfred(sortedItems))
+    renderedAlfredList = renderForAlfred(sortedItems)
+
+    # Add an item fo the update if we have one
+    workflowUpdateAlfredItem = getWorkflowUpdateAlfredItem()
+    if workflowUpdateAlfredItem:
+        alfredDict = ujson.loads(renderedAlfredList)
+        alfredDict["items"].insert(0, workflowUpdateAlfredItem)
+        renderedAlfredList = ujson.dumps(alfredDict, indent = 4)
+
+    print(renderedAlfredList)
 
 if __name__ == '__main__':
     main()
