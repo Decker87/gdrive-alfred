@@ -35,10 +35,10 @@ def action_search(query):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--action", help="Action", default="search", choices=["search"])
-    parser.add_argument("query", help="Query if searching") # TODO - make optional
+    parser.add_argument("--query", help="Query if searching")
     args = parser.parse_args()
 
-    if args.action == "search":
+    if args.action == "search" and args.query != None:
         return action_search(args.query)
 
 if __name__ == '__main__':
