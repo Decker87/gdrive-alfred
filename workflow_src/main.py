@@ -1,6 +1,7 @@
 import sys
 import uuid
 import json
+import argparse
 
 import search
 from workflow_version_utils import *
@@ -11,8 +12,7 @@ MAX_ALFRED_ITEMS = 20
 # Have to look in local folder - CI will pip install these locally
 sys.path.insert(0, "pylib_dist")
 
-def main(query):
-    """Attempt to search, and add update item if we should."""
+def action_search(query):
     fullAlfredItemList = []
     searchAlfredItems = search.search(query)
     workflowUpdateAlfredItem = getWorkflowUpdateAlfredItem()
@@ -32,5 +32,14 @@ def main(query):
     # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format
     print(json.dumps({"items": fullAlfredItemList}, indent = 4))
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--action", help="Action", default="search", choices=["search"])
+    parser.add_argument("query", help="Query if searching") # TODO - make optional
+    args = parser.parse_args()
+
+    if args.action == "search":
+        return action_search(args.query)
+
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()
