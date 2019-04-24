@@ -17,7 +17,7 @@ if ! grep -Fq '"items": []' out.txt; then
 fi
 
 echo "TEST: If version is out of date, should add an item to update"
-python continuously_get_latest_workflow_version.py --debug --spoof-newer-version
+python continuously_get_latest_workflow.py --debug --spoof-newer-version
 python main.py --query "Edward" | tee out.txt
 if ! grep -Fq "An update is available" out.txt; then
     rm "latest/VERSION.txt"

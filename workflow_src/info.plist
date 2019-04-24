@@ -175,7 +175,7 @@ echo -n "$url"</string>
 				<string>"Searching..."</string>
 				<key>script</key>
 				<string>./ensure_script_running.sh "continuously_update_local_cache.py" 1&gt;/dev/null 2&gt;/dev/null
-./ensure_script_running.sh "continuously_get_latest_workflow_version.py" 1&gt;/dev/null 2&gt;/dev/null
+./ensure_script_running.sh "continuously_get_latest_workflow.py" 1&gt;/dev/null 2&gt;/dev/null
 python main.py --action=search --query "{query}"
 </string>
 				<key>scriptargtype</key>
