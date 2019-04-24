@@ -4,6 +4,7 @@
 
 * Support "sheet" keyword (and other file types)
 * Support "old" keyword
+* Support "version" keyword to get info about current version
 
 ## Better scoring
 * Score as whole list to inter-item comparison
