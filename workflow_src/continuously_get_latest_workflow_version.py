@@ -10,7 +10,6 @@ sys.path.insert(0, "pylib_dist")
 import requests
 
 # Settings
-LATEST_WORKFLOW_PATH = "latest/gdrive-alfred.alfredworkflow"
 ASSET_NAME = "gdrive-alfred.alfredworkflow"
 EXCEPTIONLOG_FILEPATH = "exceptions.log"
 CHECK_PERIOD_SECONDS = 5*60
@@ -54,8 +53,8 @@ def getLatestWorkflow():
         return False
 
     # Save it
-    open(LATEST_WORKFLOW_PATH, "wb").write(r.content)
-    open(LATEST_VERSION_PATH, "w").write(latestVersion)
+    open(DLED_WORKFLOW_PATH, "wb").write(r.content)
+    open(DLED_VERSION_PATH, "w").write(latestVersion)
     print("SUCCESS: Downloaded latest workflow version.")
     return True
 

@@ -5,6 +5,7 @@ sys.path.insert(0, "pylib_dist")
 import requests
 
 # Settings
+DLED_WORKFLOW_PATH = "latest/gdrive-alfred.alfredworkflow"
 DLED_VERSION_PATH = "latest/VERSION.txt"
 CURRENT_VERSION_PATH = "VERSION.txt"
 
