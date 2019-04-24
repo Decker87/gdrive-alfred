@@ -3,6 +3,7 @@ import time
 import os
 import signal
 import traceback
+import argparse
 from workflow_version_utils import *
 
 # Have to look in local folder - CI will pip install these locally
@@ -13,6 +14,8 @@ import requests
 ASSET_NAME = "gdrive-alfred.alfredworkflow"
 EXCEPTIONLOG_FILEPATH = "exceptions.log"
 CHECK_PERIOD_SECONDS = 5*60
+debugMode = False
+spoofNewerVersion = False
 
 def ensureDirectoriesExist():
     try:
@@ -26,6 +29,9 @@ def getLatestWorkflow():
     if not r:
         return False
     latestVersion, release = r
+
+    if spoofNewerVersion:
+        latestVersion = "10.0.0"
 
     # Check if it's actually newer than what we have already
     downloadedVersion = getDownloadedVersion()
@@ -59,6 +65,15 @@ def getLatestWorkflow():
     return True
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", help="Debug mode", action="store_true")
+    parser.add_argument("--spoof-newer-version", help="Simulate latest version being very high in number.", action="store_true")
+    args = parser.parse_args()
+
+    global debugMode, spoofNewerVersion
+    debugMode = args.debug
+    spoofNewerVersion = args.spoof_newer_version
+
     """Continuously gets the latest release."""
     while True:
         try:
@@ -68,6 +83,8 @@ def main():
             exceptionStr = "%s\n%s%s" % ("#"*40, traceback.format_exc(), "#"*40)
             print(exceptionStr)
             open(EXCEPTIONLOG_FILEPATH, "a").write(exceptionStr + "\n")
+        if debugMode:
+            break
         print("INFO: Waiting %i seconds to get latest again." % (CHECK_PERIOD_SECONDS))
         time.sleep(CHECK_PERIOD_SECONDS)
 
