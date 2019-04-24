@@ -22,15 +22,22 @@ def main():
     parser.add_argument("--query", help="Query if searching")
     args = parser.parse_args()
 
-    # Build item list from actions
     items = []
-    if args.action == "search" and args.query != None:
-        items += action_search(args.query)
 
     # Add Update item at the top
     workflowUpdateAlfredItem = getWorkflowUpdateAlfredItem()
     if workflowUpdateAlfredItem:
-        items.insert(0, workflowUpdateAlfredItem)
+        items.append(workflowUpdateAlfredItem)
+
+    # Magic "version" argument
+    if args.query != None and "version" in args.query:
+        items.append({
+            "title": "Current workflow version: %s" % getCurrentVersion(),
+        })
+
+    # Action items
+    if args.action == "search" and args.query != None:
+        items += action_search(args.query)
 
     # Add UUIDs so we can record easily what was chosen when
     for item in items:
