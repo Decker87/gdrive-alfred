@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string></string>
+	<string>com.adam.gdrive-alfred</string>
 	<key>connections</key>
 	<dict>
 		<key>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</key>
@@ -70,7 +70,7 @@
 		</array>
 	</dict>
 	<key>createdby</key>
-	<string></string>
+	<string>Adam Schirmacher</string>
 	<key>description</key>
 	<string>Search your google drive! (enter search terms)</string>
 	<key>disabled</key>
@@ -295,6 +295,6 @@ python main.py --action=search --query "{query}"
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/Decker87/gdrive-alfred</string>
 </dict>
 </plist>
