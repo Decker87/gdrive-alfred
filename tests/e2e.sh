@@ -10,6 +10,22 @@ if ! grep -Fq "Org Chart" out.txt; then
     exit 1
 fi
 
+echo "TEST: basic search with cache, sheet type"
+rm cache.json 2>/dev/null
+python continuously_update_local_cache.py --spoof-server --debug
+python main.py --query "Kelly sheet" | tee out.txt
+if ! grep -Fq "1tgzWrjCGkJLjTPlQO3Uuz42XJKqH0Mu13VUkVAGBt1c" out.txt; then
+    exit 1
+fi
+
+echo "TEST: basic search with cache, doc type"
+rm cache.json 2>/dev/null
+python continuously_update_local_cache.py --spoof-server --debug
+python main.py --query "Kelly doc" | tee out.txt
+if ! grep -Fq "1uwEPYqv1Vl9dsAs3X51qrUigE2NfExOBT764XyaFifs" out.txt; then
+    exit 1
+fi
+
 echo "TEST: Junk query should have empty item results"
 python main.py --query "fajksdhfhadslfjhdsafljkadh" | tee out.txt
 if ! grep -Fq '"items": []' out.txt; then
