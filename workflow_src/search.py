@@ -93,10 +93,28 @@ def searchLocalCache(query):
             return None
     except:
         return None
-    
+
+    # See if any tokens match a mime type, use the last one
+    mimeTypeKeywords = {
+        "sheet": "application/vnd.google-apps.spreadsheet",
+        "slide": "application/vnd.google-apps.presentation",
+        "doc": "application/vnd.google-apps.document"
+    }
+    mimeTypeRequired = None
+
+    for token in tokens:
+        if token in mimeTypeKeywords:
+            mimeTypeRequired = mimeTypeKeywords[token]
+
+    # Remove any tokens that were just mime type filters
+    tokens = [token for token in tokens if token not in mimeTypeKeywords]
+
     # Attach scores directly to the items; this is just easier than tracking separately
     tokenMatchedItems = []
     for item in items:
+        if mimeTypeRequired and "mimeType" in item and item["mimeType"] != mimeTypeRequired:
+            continue
+
         item["score"] = score(item, tokens, zeroOnZeroTokenScore = True)
         if item["score"] > 0.0:
             tokenMatchedItems.append(item)
