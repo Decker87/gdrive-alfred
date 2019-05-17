@@ -98,7 +98,8 @@ def searchLocalCache(query):
     mimeTypeKeywords = {
         "sheet": "application/vnd.google-apps.spreadsheet",
         "slide": "application/vnd.google-apps.presentation",
-        "doc": "application/vnd.google-apps.document"
+        "doc": "application/vnd.google-apps.document",
+        "folder": "application/vnd.google-apps.folder",
     }
     mimeTypeRequired = None
 
