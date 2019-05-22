@@ -121,7 +121,7 @@ def searchLocalCache(query):
             tokenMatchedItems.append(item)
 
     # Sort by scores
-    sortedItems = sorted(tokenMatchedItems, key = lambda x: x["score"], reverse = True)
+    sortedItems = sorted(tokenMatchedItems, key = lambda x: (x["score"], x["viewedByMeTime"]), reverse = True)
     return sortedItems
 
 def convertToAlfredItem(googleItem):
