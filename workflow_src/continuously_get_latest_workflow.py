@@ -7,7 +7,8 @@ import argparse
 from workflow_version_utils import *
 
 # Have to look in local folder - CI will pip install these locally
-sys.path.insert(0, "pylib_dist")
+libAbsPath = os.path.dirname(os.path.abspath(__file__)) + os.sep + "pylib_dist"
+sys.path.insert(0, libAbsPath)
 import requests
 
 # Settings
