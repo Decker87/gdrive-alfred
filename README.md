@@ -28,7 +28,9 @@ With OSX Catalina, Apple decided to break everything. Because of this you need t
 
 First, get the latest release of the Workflow: Click [here](https://github.com/Decker87/gdrive-alfred/releases).
 
-After installing/updating and using the workflow for the first time, you might get a message saying that `ujson.so` can't be opened.
+After installing/updating and using the workflow for the first time, you might get a message saying that `ujson.so` can't be opened that looks like this:
+
+![Screenshot](screenshot_ujson.png "Screenshot")
 
 1. To get past this, open up your Security & Privacy settings. You can find this by clicking the Apple logo in top-left, then select System Preferences.
 1. You should see an option in there to allow access to `ujson.so`. Click to allow it. It should look like the screenshot below.
