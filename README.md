@@ -2,7 +2,7 @@
 
 This is a worflow for the Mac software "Alfred", which allows you to quickly (with a few keystrokes) find all your google docs. 
 
-![Screenshot](screenshot.png "Screenshot")
+![Screenshot](screenshot_usage.png "Screenshot")
 
 # Installation
 
@@ -21,6 +21,21 @@ Once you have Alfred full version (a.k.a. power pack):
 This workflow uses a magic keyword, `d`. Yes, just the letter d. Type "d" (lowercase) then a space then your search query.
 
 The first time, you may need to wait for its cache to populate.
+
+## Important note for OSX Catalina! Please read!
+
+With OSX Catalina, Apple decided to break everything. Because of this you need to do an extra thing.
+
+First, get the latest release of the Workflow: Click [here](https://github.com/Decker87/gdrive-alfred/releases).
+
+After installing/updating and using the workflow for the first time, you might get a message saying that `ujson.so` can't be opened.
+
+1. To get past this, open up your Security & Privacy settings. You can find this by clicking the Apple logo in top-left, then select System Preferences.
+1. You should see an option in there to allow access to `ujson.so`. Click to allow it. It should look like the screenshot below.
+
+![Screenshot](screenshot_security_panel.png "Screenshot")
+
+This is an open-source library for faster JSON manipulation. Apple decided with Catalina to by default block any apps that aren't from their app store, which is why it blocks this. It's perfectly safe.
 
 # FAQs
 
