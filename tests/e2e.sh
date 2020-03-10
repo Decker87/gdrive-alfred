@@ -28,7 +28,8 @@ fi
 
 echo "TEST: Junk query should have empty item results"
 python main.py --query "fajksdhfhadslfjhdsafljkadh" | tee out.txt
-if ! grep -Fq '"items": []' out.txt; then
+# Items always contain an "arg", so no "arg" = empty items
+if ! grep -Fq '"items":' out.txt || grep -Fq '"args"' out.txt; then
     exit 4
 fi
 
@@ -54,3 +55,5 @@ t=`echo $t`
 if [[ "$t" != "1" ]]; then
     exit 7
 fi
+
+echo "SUCCESS"
