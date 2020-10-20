@@ -32,6 +32,8 @@ OK. You've got it installed. Just a few more clicks...
     
     ![Screenshot](screenshot_usage.png "Screenshot")
 
+Note: `ujson.so` is an open-source library for faster JSON manipulation. Apple decided with Catalina to by default block any apps that aren't from their app store, which is why it blocks this. It's perfectly safe.
+
 # Usage
 
 This workflow uses a magic keyword, `d`. Yes, just the letter d. Type "d" (lowercase) then a space then your search query.
@@ -41,21 +43,3 @@ You can also use the keyword `dp` to do the same thing, but paste the URL rather
 ![Screenshot](screenshot_paste_command.png "Screenshot")
 
 The first time, you may need to wait for its cache to populate.
-
-## Important note for OSX Catalina! Please read!
-
-With OSX Catalina, Apple decided to break everything. Because of this you need to do an extra thing.
-
-First, get the latest release of the Workflow: Click [here](https://github.com/Decker87/gdrive-alfred/releases).
-
-After installing/updating and using the workflow for the first time, you might get a message saying that `ujson.so` can't be opened that looks like this:
-
-![Screenshot](screenshot_ujson.png "Screenshot")
-
-
-
-This is an open-source library for faster JSON manipulation. Apple decided with Catalina to by default block any apps that aren't from their app store, which is why it blocks this. It's perfectly safe.
-
-# FAQs
-
-??
