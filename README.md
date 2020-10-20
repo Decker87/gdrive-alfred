@@ -4,7 +4,7 @@ This is a worflow for the Mac software "Alfred", which allows you to quickly (wi
 
 ![Screenshot](screenshot_usage.png "Screenshot")
 
-# Installation
+# Installation & first-time usage
 
 You need to purchase the full version of Alfred to use workflows. If you don't have it, you should get it. It's well worth it.
 
@@ -15,6 +15,12 @@ Once you have Alfred full version (a.k.a. power pack):
 1. Once downloaded, find the `gdrive-alfred.alfredworkflow` file in Finder.
 1. Double-click it.
 1. Alfred should pop open to import the workflow. Click through the prompts.
+
+OK. You've got it installed. Just a few more clicks...
+
+1. Enter your Alfred command; by default this is Alt+Space.
+1. Type "d asdf". The "d" command followed by a space is the command you will use to invoke this drive searcher.
+1. The first time, you are likely to get an error like this: ![Screenshot](screenshot_ujson.png "Screenshot")
 
 # Usage
 
