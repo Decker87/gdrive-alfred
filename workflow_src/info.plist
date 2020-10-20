@@ -55,11 +55,73 @@
 				<false/>
 			</dict>
 		</array>
+		<key>ACB7B8EF-BAFD-4930-940C-CB441FCAC70D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>445FD78D-F8BE-460A-8536-8ECB7D0F7E57</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 		<key>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>B966525C-30BE-46D6-AECC-3FEEA9D971AD</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>AF005B1E-FCB4-4BC5-A67C-A7C492A8E340</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>ACB7B8EF-BAFD-4930-940C-CB441FCAC70D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>B966525C-30BE-46D6-AECC-3FEEA9D971AD</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>D6994F0D-7E0F-4E9E-BD8B-D014CB2FBEAF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -236,6 +298,161 @@ python main.py --action=search --query "{query}"
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>open "latest/gdrive-alfred.alfredworkflow"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>445FD78D-F8BE-460A-8536-8ECB7D0F7E57</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>inputstring</key>
+				<string>{query}</string>
+				<key>matchcasesensitive</key>
+				<true/>
+				<key>matchmode</key>
+				<integer>0</integer>
+				<key>matchstring</key>
+				<string>UPDATE</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.filter</string>
+			<key>uid</key>
+			<string>ACB7B8EF-BAFD-4930-940C-CB441FCAC70D</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>dp</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string>"Searching..."</string>
+				<key>script</key>
+				<string>./ensure_script_running.sh "continuously_update_local_cache.py" 1&gt;/dev/null 2&gt;/dev/null
+./ensure_script_running.sh "continuously_get_latest_workflow.py" 1&gt;/dev/null 2&gt;/dev/null
+python main.py --action=search --query "{query}"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>(Adam's drive search)</string>
+				<key>title</key>
+				<string>Search G-Drive and paste</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>D6994F0D-7E0F-4E9E-BD8B-D014CB2FBEAF</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query="{query}"
+id=$(echo "$query" | cut -d "|" -f 1)
+url=$(echo "$query" | cut -d "|" -f 2-)
+echo "$id" &gt;&gt; "chosen_ids.txt"
+echo -n "$url"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<true/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>AF005B1E-FCB4-4BC5-A67C-A7C492A8E340</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>inputstring</key>
+				<string>{query}</string>
+				<key>matchcasesensitive</key>
+				<true/>
+				<key>matchmode</key>
+				<integer>1</integer>
+				<key>matchstring</key>
+				<string>UPDATE</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.filter</string>
+			<key>uid</key>
+			<string>B966525C-30BE-46D6-AECC-3FEEA9D971AD</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -247,6 +464,15 @@ python main.py --action=search --query "{query}"
 			<integer>830</integer>
 			<key>ypos</key>
 			<integer>290</integer>
+		</dict>
+		<key>445FD78D-F8BE-460A-8536-8ECB7D0F7E57</key>
+		<dict>
+			<key>note</key>
+			<string>Open update file</string>
+			<key>xpos</key>
+			<integer>830</integer>
+			<key>ypos</key>
+			<integer>440</integer>
 		</dict>
 		<key>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</key>
 		<dict>
@@ -275,6 +501,22 @@ python main.py --action=search --query "{query}"
 			<key>ypos</key>
 			<integer>210</integer>
 		</dict>
+		<key>ACB7B8EF-BAFD-4930-940C-CB441FCAC70D</key>
+		<dict>
+			<key>note</key>
+			<string>UPDATE</string>
+			<key>xpos</key>
+			<integer>690</integer>
+			<key>ypos</key>
+			<integer>500</integer>
+		</dict>
+		<key>AF005B1E-FCB4-4BC5-A67C-A7C492A8E340</key>
+		<dict>
+			<key>xpos</key>
+			<integer>830</integer>
+			<key>ypos</key>
+			<integer>610</integer>
+		</dict>
 		<key>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</key>
 		<dict>
 			<key>note</key>
@@ -283,6 +525,33 @@ python main.py --action=search --query "{query}"
 			<integer>690</integer>
 			<key>ypos</key>
 			<integer>290</integer>
+		</dict>
+		<key>B966525C-30BE-46D6-AECC-3FEEA9D971AD</key>
+		<dict>
+			<key>note</key>
+			<string>NO UPDATE</string>
+			<key>xpos</key>
+			<integer>690</integer>
+			<key>ypos</key>
+			<integer>610</integer>
+		</dict>
+		<key>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</key>
+		<dict>
+			<key>note</key>
+			<string>Record choice ID</string>
+			<key>xpos</key>
+			<integer>470</integer>
+			<key>ypos</key>
+			<integer>530</integer>
+		</dict>
+		<key>D6994F0D-7E0F-4E9E-BD8B-D014CB2FBEAF</key>
+		<dict>
+			<key>note</key>
+			<string>Main Search</string>
+			<key>xpos</key>
+			<integer>270</integer>
+			<key>ypos</key>
+			<integer>530</integer>
 		</dict>
 		<key>EA11CAB7-FEF2-4893-B060-FEA746A3AAA9</key>
 		<dict>
