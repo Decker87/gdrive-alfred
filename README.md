@@ -20,6 +20,10 @@ Once you have Alfred full version (a.k.a. power pack):
 
 This workflow uses a magic keyword, `d`. Yes, just the letter d. Type "d" (lowercase) then a space then your search query.
 
+You can also use the keyword `dp` to do the same thing, but paste the URL rather than open it.
+
+![Screenshot](screenshot_paste_command.png "Screenshot")
+
 The first time, you may need to wait for its cache to populate.
 
 ## Important note for OSX Catalina! Please read!
