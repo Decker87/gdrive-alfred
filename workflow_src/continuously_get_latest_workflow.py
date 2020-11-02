@@ -1,6 +1,15 @@
+# Exit fast if it's already running. Taken from https://stackoverflow.com/a/384493
+import os
+import fcntl
+lock_file_pointer = os.open('continuously_get_latest_workflow.lock', os.O_WRONLY | os.O_CREAT)
+try:
+    fcntl.lockf(lock_file_pointer, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except IOError:
+    exit()
+
+# OK, we're the only one running, so go ahead and do normal stuff
 import sys
 import time
-import os
 import signal
 import traceback
 import argparse
