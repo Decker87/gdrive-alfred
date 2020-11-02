@@ -40,11 +40,6 @@ def main():
     if args.action == "search" and args.query != None:
         items += action_search(args.query)
 
-    # Add UUIDs so we can record easily what was chosen when
-    for item in items:
-        if "arg" in item:
-            item["arg"] = "%s|%s" % (uuid.uuid4().hex, item["arg"])
-
     # Print for Alfred
     # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format
     print(ujson.dumps({"items": items[:MAX_ALFRED_ITEMS]}, indent = 4))

@@ -23,19 +23,6 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>9A84D52F-CA55-496C-894E-D5880272E088</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
-		<key>9A84D52F-CA55-496C-894E-D5880272E088</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
 				<string>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -94,7 +81,7 @@
 				<false/>
 			</dict>
 		</array>
-		<key>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</key>
+		<key>D6994F0D-7E0F-4E9E-BD8B-D014CB2FBEAF</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
@@ -109,19 +96,6 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>B966525C-30BE-46D6-AECC-3FEEA9D971AD</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
-		<key>D6994F0D-7E0F-4E9E-BD8B-D014CB2FBEAF</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -182,33 +156,6 @@
 			<string>5E0DF2E9-EF1A-4D58-8546-EE59D257BCF5</string>
 			<key>version</key>
 			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>query="{query}"
-id=$(echo "$query" | cut -d "|" -f 1)
-url=$(echo "$query" | cut -d "|" -f 2-)
-echo "$id" &gt;&gt; "chosen_ids.txt"
-echo -n "$url"</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>9A84D52F-CA55-496C-894E-D5880272E088</string>
-			<key>version</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -393,33 +340,6 @@ python main.py --action=search --query "{query}"
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>query="{query}"
-id=$(echo "$query" | cut -d "|" -f 1)
-url=$(echo "$query" | cut -d "|" -f 2-)
-echo "$id" &gt;&gt; "chosen_ids.txt"
-echo -n "$url"</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>autopaste</key>
 				<true/>
 				<key>clipboardtext</key>
@@ -488,16 +408,7 @@ echo -n "$url"</string>
 			<key>note</key>
 			<string>Main Search</string>
 			<key>xpos</key>
-			<integer>270</integer>
-			<key>ypos</key>
-			<integer>210</integer>
-		</dict>
-		<key>9A84D52F-CA55-496C-894E-D5880272E088</key>
-		<dict>
-			<key>note</key>
-			<string>Record choice ID</string>
-			<key>xpos</key>
-			<integer>470</integer>
+			<integer>400</integer>
 			<key>ypos</key>
 			<integer>210</integer>
 		</dict>
@@ -535,21 +446,12 @@ echo -n "$url"</string>
 			<key>ypos</key>
 			<integer>610</integer>
 		</dict>
-		<key>CDE53F43-8B7F-4823-AD6D-E5B12E0763CB</key>
-		<dict>
-			<key>note</key>
-			<string>Record choice ID</string>
-			<key>xpos</key>
-			<integer>470</integer>
-			<key>ypos</key>
-			<integer>530</integer>
-		</dict>
 		<key>D6994F0D-7E0F-4E9E-BD8B-D014CB2FBEAF</key>
 		<dict>
 			<key>note</key>
 			<string>Main Search</string>
 			<key>xpos</key>
-			<integer>270</integer>
+			<integer>400</integer>
 			<key>ypos</key>
 			<integer>530</integer>
 		</dict>
