@@ -184,7 +184,7 @@
 				<string>"Searching..."</string>
 				<key>script</key>
 				<string>nohup python continuously_update_local_cache.py 1&gt;continuously_update_local_cache.stdout 2&gt;continuously_update_local_cache.stderr &amp;
-nohup python continuously_get_latest_workflow.py.py 1&gt;continuously_get_latest_workflow.py.stdout 2&gt;continuously_get_latest_workflow.py.stderr &amp;
+nohup python continuously_get_latest_workflow.py 1&gt;continuously_get_latest_workflow.stdout 2&gt;continuously_get_latest_workflow.stderr &amp;
 python main.py --action=search --query "{query}"
 </string>
 				<key>scriptargtype</key>
@@ -210,25 +210,6 @@ python main.py --action=search --query "{query}"
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>inputstring</key>
-				<string>{query}</string>
-				<key>matchcasesensitive</key>
-				<true/>
-				<key>matchmode</key>
-				<integer>1</integer>
-				<key>matchstring</key>
-				<string>UPDATE</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.utility.filter</string>
-			<key>uid</key>
-			<string>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>browser</key>
 				<string></string>
 				<key>spaces</key>
@@ -242,6 +223,25 @@ python main.py --action=search --query "{query}"
 			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
 			<string>1CFB6004-0D4A-4A80-BDC7-1F9AA13211EA</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>inputstring</key>
+				<string>{query}</string>
+				<key>matchcasesensitive</key>
+				<true/>
+				<key>matchmode</key>
+				<integer>1</integer>
+				<key>matchstring</key>
+				<string>UPDATE</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.filter</string>
+			<key>uid</key>
+			<string>B4E46BA7-52E3-4DF1-B93A-2CC2C97F7D4A</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -314,7 +314,7 @@ python main.py --action=search --query "{query}"
 				<string>"Searching..."</string>
 				<key>script</key>
 				<string>nohup python continuously_update_local_cache.py 1&gt;continuously_update_local_cache.stdout 2&gt;continuously_update_local_cache.stderr &amp;
-nohup python continuously_get_latest_workflow.py.py 1&gt;continuously_get_latest_workflow.py.stdout 2&gt;continuously_get_latest_workflow.py.stderr &amp;
+nohup python continuously_get_latest_workflow.py 1&gt;continuously_get_latest_workflow.stdout 2&gt;continuously_get_latest_workflow.stderr &amp;
 python main.py --action=search --query "{query}"
 </string>
 				<key>scriptargtype</key>
@@ -340,23 +340,6 @@ python main.py --action=search --query "{query}"
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>autopaste</key>
-				<true/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>transient</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>AF005B1E-FCB4-4BC5-A67C-A7C492A8E340</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>inputstring</key>
 				<string>{query}</string>
 				<key>matchcasesensitive</key>
@@ -372,6 +355,23 @@ python main.py --action=search --query "{query}"
 			<string>B966525C-30BE-46D6-AECC-3FEEA9D971AD</string>
 			<key>version</key>
 			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<true/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>AF005B1E-FCB4-4BC5-A67C-A7C492A8E340</string>
+			<key>version</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
