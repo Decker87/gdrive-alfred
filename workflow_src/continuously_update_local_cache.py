@@ -153,7 +153,7 @@ def getFullParentList(service, parents):
     return parentNameList
 
 def getItems(service):
-    keywordFileFields = ["name", "owners(displayName, emailAddress)", "spaces", "sharingUser(displayName, emailAddress)"]
+    keywordFileFields = ["name", "owners(displayName, emailAddress)", "sharingUser(displayName, emailAddress)"]
     generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink", "parents"]
     fileFields = keywordFileFields + generalFileFields
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
