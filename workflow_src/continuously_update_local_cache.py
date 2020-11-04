@@ -193,6 +193,7 @@ def getItems(service):
         items += result["files"]
         print("items is now %i long" % (len(items)))
         if not debugMode and "nextPageToken" in result:
+            time.sleep(5)
             nextPageToken = result["nextPageToken"]
         else:
             return items
@@ -204,9 +205,10 @@ def updateCache(service):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--debug", help="Debug mode", action="store_true")
+    parser.add_argument("--debug", help="Debug mode. Will only run once and get 10 items.", action="store_true")
     parser.add_argument("--all-fields", help="Query for all fields", action="store_true")
     parser.add_argument("--spoof-server", help="Simulate interactions with remote server", action="store_true")
+    parser.add_argument("--just-once", help="Just update cache once and exit", action="store_true")
     args = parser.parse_args()
 
     global debugMode, getAllFields, spoofServer
@@ -225,7 +227,7 @@ def main():
             exceptionStr = "%s\n%s%s" % ("#"*40, traceback.format_exc(), "#"*40)
             print(exceptionStr)
             open(EXCEPTIONLOG_FILEPATH, "a").write(exceptionStr + "\n")
-        if debugMode:
+        if debugMode or args.just_once:
             break
         time.sleep(10)
 
