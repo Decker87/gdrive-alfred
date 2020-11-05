@@ -14,7 +14,7 @@ def isoToDatetime(isoTimeStr):
     # We need to trim off the milliseconds, as there's no way to interpret it with strptime.
     return datetime.datetime.strptime(isoTimeStr[0:19], format)
 
-def score(item, tokens, zeroOnZeroTokenScore = False):
+def score(item, tokens):
     """Returns an overall relevance score for the item, based on the tokens and other factors.
     Note that these are currently a bunch of hand-tuned heuristics. It can get much smarter if
     needed."""
@@ -41,9 +41,6 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
         # Score for owner hits
         if (item['ownerEmail'] and token.lower() in item['ownerEmail'].lower()) or (item['ownerName'] and token.lower() in item['ownerName'].lower()):
             tokenScore += weightOwnerHit / totalTokenWeight / numTokens
-
-    if zeroOnZeroTokenScore and tokenScore == 0.0:
-        return 0.0
 
     # Subscore for recency
     recencyScore = 0.0
@@ -119,7 +116,7 @@ def searchLocalCache(query):
         if mimeTypeRequired and "mimeType" in item and item["mimeType"] != mimeTypeRequired:
             continue
 
-        item["score"] = score(item, tokens, zeroOnZeroTokenScore = True)
+        item["score"] = score(item, tokens)
         if item["score"] > 0.0:
             tokenMatchedItems.append(item)
 
