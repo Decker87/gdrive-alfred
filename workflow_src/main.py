@@ -1,14 +1,10 @@
 import sys
 import uuid
 import argparse
+import json
 
 import search
 from workflow_version_utils import *
-
-# Have to look in local folder - CI will pip install these locally
-libAbsPath = os.path.dirname(os.path.abspath(__file__)) + os.sep + "pylib_dist"
-sys.path.insert(0, libAbsPath)
-import ujson
 
 # Settings
 MAX_ALFRED_ITEMS = 30
@@ -42,7 +38,7 @@ def main():
 
     # Print for Alfred
     # See https://www.alfredapp.com/help/workflows/inputs/script-filter/json/ for format
-    print(ujson.dumps({"items": items[:MAX_ALFRED_ITEMS]}, indent = 4))
+    print(json.dumps({"items": items[:MAX_ALFRED_ITEMS]}, indent = 4))
 
 if __name__ == '__main__':
     main()

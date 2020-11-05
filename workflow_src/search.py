@@ -86,7 +86,6 @@ def searchLocalCache(query):
     """query is just a string, needs to be tokenized."""
     tokens = tokenize(query)
     try:
-        #items = ujson.load(open(CACHE_FILEPATH))
         items = cache_utils.getCacheItemsMatchingTokens(tokens)
 
         if items == None:   # If cache exists but reads "null"

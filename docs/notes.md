@@ -25,21 +25,9 @@ tag=1.1.1; git tag -d $tag; git push origin :refs/tags/$tag
 
 # Perf notes
 
-On 4/8/19, I did some experiments.
+On 11/04/20, I tried SQLite and found it's very fast - around 40ms to query for all items matching tokens. The overhead of spawning a python process is about 40ms, so it's basically at the theoretical maximum.
 
-For an item list 781 docs long:
-* cPickle took 4.857s to load the file 100 times
-* Iterating the list in-memory took less than 1ms total (basically neglectable)
-
-So I can calculate it 0.062ms per doc to load into memory. At 1000 docs this is 62ms. At 10k docs this is 620ms. Will reach a point where it's not practical if others are going to use it. Will need to store stuff in memory or explore SQLite querying. For now I can rely on cPickle loading to be fast enough.
-
-Fastest method is ujson. HTTP calls seem to have 167ms overhead at least. Only potentially faster method is sqlite.
-
-# One-liner to JSON-ify cache.pickle
-
-```
-json.dump(pickle.load(open("cache.pickle")), open("cache.json", "w"), indent = 4)
-```
+Long ago, I tried running things as a cache server so that the searcher would only need to make an HTTP call. However HTTP calls seem to have 167ms overhead at least, so it's unfruitful.
 
 # Change file perms on windows
 
