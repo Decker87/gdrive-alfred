@@ -1,14 +1,9 @@
 import datetime
 import sys
 import os
-
-# Have to look in local folder - CI will pip install these locally
-libAbsPath = os.path.dirname(os.path.abspath(__file__)) + os.sep + "pylib_dist"
-sys.path.insert(0, libAbsPath)
-import ujson
+import cache_utils
 
 # Settings
-CACHE_FILEPATH = "cache.json"
 MIN_TOKEN_LENGTH = 2
 
 def isoToDatetime(isoTimeStr):
@@ -35,12 +30,16 @@ def score(item, tokens, zeroOnZeroTokenScore = False):
     numTokens = len(tokens)
 
     for token in tokens:
+        # Score for name hits
         if token.lower() in item["name"].lower():
             tokenScore += weightNameHit / totalTokenWeight / numTokens
-        if "sharingUser" in item and token.lower() in item["sharingUser"].__str__().lower():
+
+        # Score for sharing user hits
+        if (item['sharingUserEmail'] and token.lower() in item['sharingUserEmail'].lower()) or (item['sharingUserName'] and token.lower() in item['sharingUserName'].lower()):
             tokenScore += weightSharingUserHit / totalTokenWeight / numTokens
-        # consider weighing by how many owners they are - more relevant if it's the only owner
-        if "owners" in item and token.lower() in item["owners"].__str__().lower():
+
+        # Score for owner hits
+        if (item['ownerEmail'] and token.lower() in item['ownerEmail'].lower()) or (item['ownerName'] and token.lower() in item['ownerName'].lower()):
             tokenScore += weightOwnerHit / totalTokenWeight / numTokens
 
     if zeroOnZeroTokenScore and tokenScore == 0.0:
@@ -90,7 +89,9 @@ def searchLocalCache(query):
     """query is just a string, needs to be tokenized."""
     tokens = tokenize(query)
     try:
-        items = ujson.load(open(CACHE_FILEPATH))
+        #items = ujson.load(open(CACHE_FILEPATH))
+        items = cache_utils.getCacheItemsMatchingTokens(tokens)
+
         if items == None:   # If cache exists but reads "null"
             return None
     except:
@@ -122,7 +123,7 @@ def searchLocalCache(query):
         if item["score"] > 0.0:
             tokenMatchedItems.append(item)
 
-    # Sort by scores
+    # Sort by scores, then the last view time
     sortedItems = sorted(tokenMatchedItems, key = lambda x: (x["score"], x["viewedByMeTime"]), reverse = True)
     return sortedItems
 
