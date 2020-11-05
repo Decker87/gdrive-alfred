@@ -4,11 +4,9 @@ icons/
 /last_items.json
 pylib_dist/
 /cache.db
-/chosen_ids.txt
 /nohup.out
-/continuously_update_local_cache.pyc
 /last_result.json
 /exceptions.log
 /latest
-/continuously_get_latest_workflow.lock
-/continuously_update_local_cache.lock
+*.lock
+*.pyc
