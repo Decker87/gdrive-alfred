@@ -15,6 +15,7 @@ import sys
 import json
 import traceback
 import argparse
+import cache_utils
 
 # Have to look in local folder - CI will pip install these locally
 libAbsPath = os.path.dirname(os.path.abspath(__file__)) + os.sep + "pylib_dist"
@@ -152,8 +153,9 @@ def getFullParentList(service, parents):
 
     return parentNameList
 
-def getItems(service):
-    keywordFileFields = ["name", "owners(displayName, emailAddress)", "sharingUser(displayName, emailAddress)"]
+def updateCache(service):
+    print("Updating local cache...")
+    keywordFileFields = ["id", "name", "owners(displayName, emailAddress)", "sharingUser(displayName, emailAddress)"]
     generalFileFields = ["modifiedTime", "modifiedByMeTime", "viewedByMeTime", "mimeType", "createdTime", "webViewLink", "iconLink", "parents"]
     fileFields = keywordFileFields + generalFileFields
     fileFieldsStr = "files(%s)" % (", ".join(fileFields))
@@ -163,10 +165,9 @@ def getItems(service):
     pageSize = 10 if debugMode else 1000
     fields = "*" if getAllFields else fields
 
-    items = []
-
     # Continuously query, adding to items
     nextPageToken = None
+    itemCount = 0
     while not waitingToDie:
         if not spoofServer:
             result = service.files().list(includeTeamDriveItems = True, supportsTeamDrives = True, fields = fields, pageToken = nextPageToken,
@@ -190,18 +191,15 @@ def getItems(service):
                     item["fullParentList"] = fullParentList
                 item.pop("parents") # Extra data, not needed
 
-        items += result["files"]
-        print("items is now %i long" % (len(items)))
+        itemCount += len(result["files"])
+        print("Updating cache with %i more items, for %i total so far." % (len(result["files"]), itemCount))
+        cache_utils.updateCache(result["files"])
+
         if not debugMode and "nextPageToken" in result:
-            time.sleep(5)
+            time.sleep(3)
             nextPageToken = result["nextPageToken"]
         else:
-            return items
-
-def updateCache(service):
-    print("Updating local cache...")
-    items = getItems(service)
-    json.dump(items, open(CACHE_FILEPATH, "w"), indent = 4)
+            return True
 
 def main():
     parser = argparse.ArgumentParser()

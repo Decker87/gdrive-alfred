@@ -53,9 +53,9 @@ def createTable():
         schema['primaryKey'],
     )
 
-    print("###### SQL ######")
-    print(sql)
-    print("#################")
+    # print("###### SQL ######")
+    # print(sql)
+    # print("#################")
 
     try:
         conn = getConnection()
@@ -80,7 +80,6 @@ def updateCache(driveItems):
     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);'''
 
     for driveItem in driveItems:
-        print("Working on another drive item.")
         #id,name,createdTime,modifiedTime,viewedByMeTime,ownerEmail,ownerName,sharingUserEmail,sharingUserName,mimeType,webViewLink,iconPath,iconLink
         values = []
         values.append(driveItem['id'])
@@ -151,5 +150,3 @@ if __name__ == '__main__':
     driveItems = json.load(open('cache.json'))
     updateCache(driveItems)
     cacheItems = getCacheItemsMatchingTokens(["Adam"])
-    print(len(cacheItems))
-    print(cacheItems[:5])
