@@ -131,9 +131,9 @@ def getCacheItemsMatchingTokens(tokens):
         ' OR\n'.join(clauses*len(tokens)),
     )
 
-    print("###### SQL ######")
-    print(sql)
-    print("#################")
+    # print("###### SQL ######")
+    # print(sql)
+    # print("#################")
 
     conn = getConnection()
     cur = conn.cursor()
