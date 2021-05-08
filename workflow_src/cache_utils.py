@@ -3,76 +3,113 @@ from sqlite3 import Error
 
 cacheFilename = 'cache.db'
 
+connection = None
+def getConnection():
+    global connection
+    if connection:
+        return connection
+    else:
+        connection = sqlite3.connect(cacheFilename)
+        return connection
+
+def closeConnection():
+    global connection
+    if connection:
+        connection.close()
+        connection = None
+
+#########################
+### TABLE DEFINITIONS ###
+#########################
+
 schema = {
-    'fields': [
-        { 'name': 'id', 'type': 'TEXT NOT NULL UNIQUE'},
-        { 'name': 'name', 'type': 'TEXT'},
-        { 'name': 'createdTime', 'type': 'TEXT'},
-        { 'name': 'modifiedTime', 'type': 'TEXT'},
-        { 'name': 'viewedByMeTime', 'type': 'TEXT'},
-        { 'name': 'ownerEmail', 'type': 'TEXT'},
-        { 'name': 'ownerName', 'type': 'TEXT'},
-        { 'name': 'sharingUserEmail', 'type': 'TEXT'},
-        { 'name': 'sharingUserName', 'type': 'TEXT'},
-        { 'name': 'mimeType', 'type': 'TEXT'},
-        { 'name': 'webViewLink', 'type': 'TEXT'},
-        { 'name': 'iconPath', 'type': 'TEXT'},
-        { 'name': 'iconLink', 'type': 'TEXT'},
-    ],
-    'primaryKey': 'id',
-    'tableName': 'cacheItems',
+    'tables': [
+        {
+            'tableName': 'cacheItems',
+            'fields': [
+                { 'name': 'id', 'type': 'TEXT NOT NULL UNIQUE'},
+                { 'name': 'name', 'type': 'TEXT'},
+                { 'name': 'createdTime', 'type': 'TEXT'},
+                { 'name': 'modifiedTime', 'type': 'TEXT'},
+                { 'name': 'viewedByMeTime', 'type': 'TEXT'},
+                { 'name': 'ownerEmail', 'type': 'TEXT'},
+                { 'name': 'ownerName', 'type': 'TEXT'},
+                { 'name': 'sharingUserEmail', 'type': 'TEXT'},
+                { 'name': 'sharingUserName', 'type': 'TEXT'},
+                { 'name': 'parentPath', 'type': 'TEXT'},
+                { 'name': 'mimeType', 'type': 'TEXT'},
+                { 'name': 'webViewLink', 'type': 'TEXT'},
+                { 'name': 'iconPath', 'type': 'TEXT'},
+                { 'name': 'iconLink', 'type': 'TEXT'},
+            ],
+            'primaryKey': 'id',
+        },
+    ]
 }
 
-def getConnection():
-    return sqlite3.connect(cacheFilename)
+def schemaIsAsExpected():
+    '''Returns False if the DB isn't in a good state and we need to start over. This should happen very rarely.'''
+    conn = getConnection()
 
-def createTable():
-    '''Creates the DB and main driveItems table if they don't exist already.'''
+    # Check whether it's got all the tables we expect
+    expectedTables = [table['tableName'] for table in schema['tables']]
+    sql = "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
+    cur = conn.cursor()
+    cur.execute(sql)
+    actualTables = [item[0].encode('ascii', 'replace') for item in cur.fetchall()]
+    actualTablesStr = str(sorted(actualTables))
+    expectedTablesStr = str(sorted(expectedTables))
+    if actualTablesStr != expectedTablesStr:
+        #print("set of tables mismatch: '%s' vs '%s'" % (actualTablesStr, expectedTablesStr))
+        return False
 
-    # Should look something like this.
-    # CREATE TABLE IF NOT EXISTS "cacheItems" (
-    #   "id" TEXT NOT NULL UNIQUE,
-    #   "name" TEXT,
-    #   "createdTime" TEXT,
-    #   "modifiedTime" TEXT,
-    #   "viewedByMeTime" TEXT,
-    #   "ownerEmail" TEXT,
-    #   "ownerName" TEXT,
-    #   "sharingUserEmail" TEXT,
-    #   "sharingUserName" TEXT,
-    #   "mimeType" TEXT,
-    #   "webViewLink" TEXT,
-    #   "iconPath" TEXT,
-    #   "iconLink" TEXT,
-    #   PRIMARY KEY("id")
-    # );
+    # For each table, check that the columns match up
+    for table in schema['tables']:
+        tableName = table['tableName']
+        tableInfo = conn.cursor().execute('PRAGMA table_info(%s);' % (tableName)).fetchall()
 
-    sql = 'CREATE TABLE IF NOT EXISTS "{}" (\n{},\n  PRIMARY KEY("{}")\n);'.format(
-        schema['tableName'],
-        ',\n'.join(['  "%s" %s' % (field['name'], field['type']) for field in schema['fields']]),
-        schema['primaryKey'],
-    )
+        # Create strings representing column names and types, and compare them
+        expectedColumnsStr = '|'.join(['%s,%s' % (f['name'], f['type'].split(' ')[0]) for f in table['fields']])
+        actualColumnStr = '|'.join(['%s,%s' % (col[1], col[2]) for col in tableInfo])
 
-    # print("###### SQL ######")
-    # print(sql)
-    # print("#################")
+        if actualColumnStr != expectedColumnsStr:
+            #print("Column mismatch for table '%s'.\nExpected '%s'\nActual   '%s'." % (tableName, expectedColumnsStr, actualColumnStr)) 
+            return False
 
+    return True
+
+def wipeDatabase():
+    closeConnection()
+    open(cacheFilename, 'w').write('')
+
+def initializeEmptyDatabase():
     try:
         conn = getConnection()
-        conn.cursor().execute(sql)
-        conn.commit()
-        conn.close()
-        return True
+
+        # Create the tables!
+        tables = schema['tables']
+
+        for table in tables:
+            sql = 'CREATE TABLE IF NOT EXISTS "{}" (\n{},\n  PRIMARY KEY("{}")\n);'.format(
+                table['tableName'],
+                ',\n'.join(['  "%s" %s' % (field['name'], field['type']) for field in table['fields']]),
+                table['primaryKey'],
+            )
+            conn.cursor().execute(sql)
+            conn.commit()
     except Error as e:
         print("Unhandled error: %s" % e)
         exit()
-        return False
+
+def prepareCacheDatabase():
+    '''Gets the DB in a usable state with correct tables and schema.'''
+    if not schemaIsAsExpected():
+        wipeDatabase()
+        initializeEmptyDatabase()
 
 def updateCache(driveItems):
     '''Creates the cache and driveItems table if they don't exist, then updates the cache.
     driveItems is expected to be in the format returned from the Drive API'''
-
-    createTable()
 
     conn = getConnection()
 
@@ -119,11 +156,17 @@ def updateCache(driveItems):
         conn.cursor().execute(sql, tuple(values))
     
     conn.commit()
-    conn.close()
 
 def getCacheItemsMatchingTokens(tokens):
+    # Identify the table definition for the cache table - this should always happen
+    tableSpec = None
+    for table in schema['tables']:
+        if table['tableName'] == 'cacheItems':
+            tableSpec = table
+            break
+
     columnsToMatchOn = ['name', 'ownerEmail', 'ownerName', 'sharingUserEmail', 'sharingUserName']
-    allColumnNames = [field['name'] for field in schema['fields']]
+    allColumnNames = [field['name'] for field in tableSpec['fields']]
     clauses = ["  {} like '%' || ? || '%'".format(col) for col in columnsToMatchOn]
 
     sql = 'SELECT {} FROM cacheItems WHERE\n{}\n;'.format(
@@ -146,7 +189,8 @@ def getCacheItemsMatchingTokens(tokens):
     cacheItems = [dict(zip(allColumnNames, row)) for row in rows]
     return cacheItems
 
+# Yes, we really do want to run this every time. This will make it so we always start with a database that has a known schema
+prepareCacheDatabase()
+
 if __name__ == '__main__':
-    driveItems = json.load(open('cache.json'))
-    updateCache(driveItems)
-    cacheItems = getCacheItemsMatchingTokens(["Adam"])
+    print(json.dumps(getCacheItemsMatchingTokens(['Alexis']), indent=2))
