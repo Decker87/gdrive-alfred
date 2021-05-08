@@ -25,24 +25,24 @@ def closeConnection():
 schema = {
     'tables': [
         {
-            'tableName': 'cacheItems',
+            'tableName': u'cacheItems',
             'fields': [
-                { 'name': 'id', 'type': 'TEXT NOT NULL UNIQUE'},
-                { 'name': 'name', 'type': 'TEXT'},
-                { 'name': 'createdTime', 'type': 'TEXT'},
-                { 'name': 'modifiedTime', 'type': 'TEXT'},
-                { 'name': 'viewedByMeTime', 'type': 'TEXT'},
-                { 'name': 'ownerEmail', 'type': 'TEXT'},
-                { 'name': 'ownerName', 'type': 'TEXT'},
-                { 'name': 'sharingUserEmail', 'type': 'TEXT'},
-                { 'name': 'sharingUserName', 'type': 'TEXT'},
-                { 'name': 'parentPath', 'type': 'TEXT'},
-                { 'name': 'mimeType', 'type': 'TEXT'},
-                { 'name': 'webViewLink', 'type': 'TEXT'},
-                { 'name': 'iconPath', 'type': 'TEXT'},
-                { 'name': 'iconLink', 'type': 'TEXT'},
+                { 'name': u'id', 'type': u'TEXT NOT NULL UNIQUE'},
+                { 'name': u'name', 'type': u'TEXT'},
+                { 'name': u'createdTime', 'type': u'TEXT'},
+                { 'name': u'modifiedTime', 'type': u'TEXT'},
+                { 'name': u'viewedByMeTime', 'type': u'TEXT'},
+                { 'name': u'ownerEmail', 'type': u'TEXT'},
+                { 'name': u'ownerName', 'type': u'TEXT'},
+                { 'name': u'sharingUserEmail', 'type': u'TEXT'},
+                { 'name': u'sharingUserName', 'type': u'TEXT'},
+                { 'name': u'parentPath', 'type': u'TEXT'},
+                { 'name': u'mimeType', 'type': u'TEXT'},
+                { 'name': u'webViewLink', 'type': u'TEXT'},
+                { 'name': u'iconPath', 'type': u'TEXT'},
+                { 'name': u'iconLink', 'type': u'TEXT'},
             ],
-            'primaryKey': 'id',
+            'primaryKey': u'id',
         },
     ]
 }
@@ -56,7 +56,7 @@ def schemaIsAsExpected():
     sql = "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';"
     cur = conn.cursor()
     cur.execute(sql)
-    actualTables = [item[0].encode('ascii', 'replace') for item in cur.fetchall()]
+    actualTables = [item[0] for item in cur.fetchall()]
     actualTablesStr = str(sorted(actualTables))
     expectedTablesStr = str(sorted(expectedTables))
     if actualTablesStr != expectedTablesStr:
