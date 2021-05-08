@@ -144,9 +144,9 @@ def convertToAlfredItem(googleItem):
 def search(query):
     """Returns a list of items in alfred format from the search."""
 
-    # If we got "None", it means the cache wasn't readable
+    # If we got "None" or zero items, it means the cache wasn't readable
     googleItems = searchLocalCache(query)
-    if googleItems == None:
+    if googleItems == None or len(googleItems) == 0:
         return [{
             "title": "Updating cache, try again in a few minutes.",
             "subtitle": "This is normal on first installation.",
