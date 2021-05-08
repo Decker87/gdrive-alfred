@@ -136,7 +136,7 @@ def convertToAlfredItem(googleItem):
         alfredItem["icon"] = {"path": googleItem["iconPath"]}
 
     # Use parent list as subtitle
-    if "parentPath" in googleItem:
+    if "parentPath" in googleItem and googleItem["parentPath"]:
         alfredItem["subtitle"] = googleItem["parentPath"]
 
     return alfredItem
