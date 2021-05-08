@@ -188,7 +188,7 @@ def updateCache(service):
                 fullParentList = getFullParentList(service, item["parents"])
 
                 if len(fullParentList) > 0:
-                    item["fullParentList"] = fullParentList
+                    item["parentPath"] = " >> ".join(fullParentList)
                 item.pop("parents") # Extra data, not needed
 
         itemCount += len(result["files"])

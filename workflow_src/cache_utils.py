@@ -113,11 +113,11 @@ def updateCache(driveItems):
 
     conn = getConnection()
 
-    sql = '''REPLACE INTO cacheItems(id,name,createdTime,modifiedTime,viewedByMeTime,ownerEmail,ownerName,sharingUserEmail,sharingUserName,mimeType,webViewLink,iconPath,iconLink)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);'''
+    sql = '''REPLACE INTO cacheItems(id,name,createdTime,modifiedTime,viewedByMeTime,ownerEmail,ownerName,sharingUserEmail,sharingUserName,parentPath,mimeType,webViewLink,iconPath,iconLink)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?);'''
 
     for driveItem in driveItems:
-        #id,name,createdTime,modifiedTime,viewedByMeTime,ownerEmail,ownerName,sharingUserEmail,sharingUserName,mimeType,webViewLink,iconPath,iconLink
+        #id,name,createdTime,modifiedTime,viewedByMeTime,ownerEmail,ownerName,sharingUserEmail,sharingUserName,parentPath,mimeType,webViewLink,iconPath,iconLink
         values = []
         values.append(driveItem['id'])
         values.append(driveItem.get('name', None))
@@ -148,6 +148,7 @@ def updateCache(driveItems):
         else:
             values.append(None)
             values.append(None)
+        values.append(driveItem.get('parentPath', None))
         values.append(driveItem.get('mimeType', None))
         values.append(driveItem.get('webViewLink', None))
         values.append(driveItem.get('iconPath', None))
