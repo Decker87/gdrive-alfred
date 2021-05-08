@@ -155,3 +155,6 @@ def search(query):
 
     # Else we just need to convert them all
     return [convertToAlfredItem(i) for i in googleItems]
+
+if __name__ == '__main__':
+    print(search('Alexis'))
