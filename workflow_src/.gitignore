@@ -10,3 +10,7 @@ pylib_dist/
 /latest
 *.lock
 *.pyc
+continuously_get_latest_workflow.stderr
+continuously_get_latest_workflow.stdout
+continuously_update_local_cache.stderr
+continuously_update_local_cache.stdout
