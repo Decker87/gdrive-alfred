@@ -183,9 +183,9 @@
 				<key>runningsubtext</key>
 				<string>"Searching..."</string>
 				<key>script</key>
-				<string>nohup python continuously_update_local_cache.py 1&gt;continuously_update_local_cache.stdout 2&gt;continuously_update_local_cache.stderr &amp;
-nohup python continuously_get_latest_workflow.py 1&gt;continuously_get_latest_workflow.stdout 2&gt;continuously_get_latest_workflow.stderr &amp;
-python main.py --action=search --query "{query}"
+				<string>nohup python3 continuously_update_local_cache.py 1&gt;continuously_update_local_cache.stdout 2&gt;continuously_update_local_cache.stderr &amp;
+nohup python3 continuously_get_latest_workflow.py 1&gt;continuously_get_latest_workflow.stdout 2&gt;continuously_get_latest_workflow.stderr &amp;
+python3 main.py --action=search --query "{query}"
 </string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
@@ -313,9 +313,9 @@ python main.py --action=search --query "{query}"
 				<key>runningsubtext</key>
 				<string>"Searching..."</string>
 				<key>script</key>
-				<string>nohup python continuously_update_local_cache.py 1&gt;continuously_update_local_cache.stdout 2&gt;continuously_update_local_cache.stderr &amp;
-nohup python continuously_get_latest_workflow.py 1&gt;continuously_get_latest_workflow.stdout 2&gt;continuously_get_latest_workflow.stderr &amp;
-python main.py --action=search --query "{query}"
+				<string>nohup python3 continuously_update_local_cache.py 1&gt;continuously_update_local_cache.stdout 2&gt;continuously_update_local_cache.stderr &amp;
+nohup python3 continuously_get_latest_workflow.py 1&gt;continuously_get_latest_workflow.stdout 2&gt;continuously_get_latest_workflow.stderr &amp;
+python3 main.py --action=search --query "{query}"
 </string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
