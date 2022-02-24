@@ -192,9 +192,9 @@ python main.py --action=search --query "{query}"
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>(Adam's drive search)</string>
+				<string>Add some search terms</string>
 				<key>title</key>
-				<string>Search G-Drive for search terms...</string>
+				<string>Search Google Drive and open...</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -322,9 +322,9 @@ python main.py --action=search --query "{query}"
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>(Adam's drive search)</string>
+				<string>Add some search terms</string>
 				<key>title</key>
-				<string>Search G-Drive and paste</string>
+				<string>Search Google Drive and Copy to Clipboard</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
