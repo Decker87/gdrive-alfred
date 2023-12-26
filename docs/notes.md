@@ -1,20 +1,33 @@
 # Releases
 
-CricleCI does not currently support parameterized builds. This means I can't manually kick off a special workflow to package and create a github release.
+CircleCI doesn't work. To cut a release do it manually.
 
-So, instead I've decided that any time I update the VERSION.txt file, that should tell CI to create a release and upload the .alfredworkflow file.
+1. Manually package and create a release.
+  ```bash
+  pushd workflow_src
 
-1. Change the VERSION.txt and push
-1. Let CircleCI do its thing, should result in draft release with file attached
-  1. Check https://circleci.com/gh/Decker87/gdrive-alfred/tree/master to watch
+  pip3 install --upgrade --target=. google-api-python-client google-auth-httplib2 google-auth-oauthlib requests
+
+  # Add any changed module files!
+  git add *
+  git commit -m "update modules"
+
+  mkdir -p "../bin"
+  zip -r "../bin/gdrive-alfred.alfredworkflow" *
+
+  popd
+  ```
+
+1. Change the VERSION.txt and push.
+1. Call `python3 ci/create_release.py --asset-path "bin/gdrive-alfred.alfredworkflow" $GITHUB_USER $GITHUB_TOKEN $newVersion`
+1. OR just create a new release manually in github UI.
 1. Visit https://github.com/Decker87/gdrive-alfred/releases to see it
 1. Don't forget to publish the draft release
 
 # Install python libs and dependencies to local dir
 
 ```
-mkdir pylib_dist
-pip install --target=pylib_dist --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip3 install --target=. --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
 
 # Delete a remote git tag (rendering release a draft)
